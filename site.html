@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Published Website</title>
+<style>
+body{margin:0;font-family:Arial,sans-serif}
+#loading{height:100vh;display:grid;place-items:center;color:#168cf0}
+#error{display:none;height:100vh;place-content:center;text-align:center;padding:20px}
+iframe{display:none;width:100%;height:100vh;border:0}
+</style>
+</head>
+<body>
+
+<div id="loading">Loading website...</div>
+<div id="error">
+ <h2>Website not found</h2>
+ <p>This website does not exist.</p>
+ <a href="/">Create your website</a>
+</div>
+<iframe id="siteFrame" sandbox="allow-scripts allow-forms allow-modals"></iframe>
+
+<script>
+const DB="https://testfirebase-872d3-default-rtdb.firebaseio.com";
+const username=new URLSearchParams(location.search).get("username");
+
+async function load(){
+ try{
+  if(!username||!/^[a-z0-9](?:[a-z0-9-]{1,28}[a-z0-9])$/.test(username)){
+   throw new Error("Invalid username");
+  }
+
+  const res=await fetch(DB+"/sites/"+encodeURIComponent(username)+".json");
+  if(!res.ok) throw new Error("Not found");
+
+  const site=await res.json();
+  if(!site||!site.html) throw new Error("Not found");
+
+  const html=(site.html||"").replace(/<\/script/gi,"<\\/script");
+  const css=(site.css||"").replace(/<\/style/gi,"<\\/style");
+  const js=(site.js||"").replace(/<\/script/gi,"<\\/script");
+
+  document.getElementById("siteFrame").srcdoc=
+   `<!doctype html><html><head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width,initial-scale=1">
+   <style>${css}</style>
+   </head><body>${html}
+   <script>${js}<\/script>
+   </body></html>`;
+
+  document.getElementById("loading").style.display="none";
+  document.getElementById("siteFrame").style.display="block";
+
+ }catch(e){
+  document.getElementById("loading").style.display="none";
+  document.getElementById("error").style.display="grid";
+ }
+}
+load();
+</script>
+</body>
+</html>
