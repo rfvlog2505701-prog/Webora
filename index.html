@@ -1,536 +1,314 @@
-<!DOCTYPE html>
+
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Webora - Website Builder</title>
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Webora — Website Publishing Studio</title>
+<meta name="description" content="Build, preview and publish your website with Webora.">
+<meta name="theme-color" content="#f7f9ff">
+<link rel="canonical" href="https://webora-lovat.vercel.app/">
 <style>
+:root{--bg:#f6f8ff;--ink:#17213b;--muted:#71809d;--line:#e7ebf5;--blue:#3867f5;--soft:#edf2ff}
 *{box-sizing:border-box}
-body{
-  margin:0;
-  background:#f5f7fc;
-  color:#172033;
-  font-family:Arial,sans-serif;
-}
-header{
-  height:66px;
-  background:white;
-  border-bottom:1px solid #e7eaf1;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 22px;
-  position:sticky;
-  top:0;
-  z-index:5;
-}
-.logo{font-size:23px;font-weight:800;color:#315bea}
-.logo span{color:#172033}
-main{max-width:1100px;margin:28px auto;padding:0 16px}
-.hero{margin-bottom:24px}
-.hero h1{font-size:29px;margin:0 0 8px}
-.hero p{color:#718096;margin:0}
-.card{
-  background:white;
-  border:1px solid #e6eaf2;
-  border-radius:16px;
-  padding:20px;
-  margin-bottom:18px;
-  box-shadow:0 5px 20px #17203308;
-}
-.card h2{font-size:18px;margin:0 0 16px}
-label{
-  font-size:13px;
-  font-weight:700;
-  display:block;
-  margin:13px 0 7px;
-}
-input,textarea{
-  width:100%;
-  border:1px solid #dce2ed;
-  border-radius:9px;
-  padding:12px;
-  font:14px Arial;
-  outline:none;
-  background:#fbfcff;
-  color:#172033;
-}
-input:focus,textarea:focus{border-color:#5275ed}
-textarea{
-  min-height:180px;
-  resize:vertical;
-  font-family:monospace;
-  line-height:1.5;
-}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
-button{
-  border:0;
-  border-radius:9px;
-  padding:12px 18px;
-  font-weight:700;
-  cursor:pointer;
-}
-.primary{background:#315bea;color:white}
-.secondary{background:#edf1ff;color:#315bea}
-.dark{background:#172033;color:white}
-button:disabled{opacity:.55;cursor:not-allowed}
-.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
-.preview{
-  width:100%;
-  height:350px;
-  border:1px solid #e1e5ed;
-  border-radius:10px;
-  background:white;
-}
-.status{
-  font-size:13px;
-  margin-top:12px;
-  color:#64748b;
-  white-space:pre-wrap;
-  line-height:1.5;
-}
-.status.error{color:#c0392b}
-.status.success{color:#16834a}
-.urlbox{
-  display:none;
-  background:#f0f5ff;
-  padding:14px;
-  border-radius:10px;
-  margin-top:15px;
-  overflow-wrap:anywhere;
-  line-height:1.7;
-}
-.urlbox a{color:#315bea;font-weight:bold}
-.small{font-size:12px;color:#788397;line-height:1.6}
-code{overflow-wrap:anywhere}
-@media(max-width:650px){
-  header{padding:0 15px}
-  .grid{grid-template-columns:1fr}
-  .hero h1{font-size:24px}
-  .card{padding:15px}
-  main{margin-top:20px}
-}
+body{margin:0;background:var(--bg);font-family:system-ui,sans-serif;color:var(--ink)}
+header{height:68px;display:flex;align-items:center;padding:0 5%;background:white;border-bottom:1px solid var(--line)}
+.brand{font-size:22px;font-weight:850}
+.logo{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:11px;background:#3867f5;color:white;margin-right:8px}
+.wrap{max-width:1160px;margin:34px auto;padding:0 18px 50px}
+.hero{margin-bottom:22px}
+.eyebrow{font-size:11px;color:var(--blue);font-weight:800;letter-spacing:1.5px}
+.hero h1{font-size:clamp(28px,4vw,40px);margin:8px 0}
+.hero p,.hint{color:var(--muted);font-size:13px;line-height:1.6}
+.layout{display:grid;grid-template-columns:1.05fr .95fr;gap:18px;align-items:start}
+.panel{background:white;border:1px solid var(--line);border-radius:18px;overflow:hidden;margin-bottom:18px}
+.head{padding:17px 20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;font-weight:750}
+.content{padding:20px}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12px;font-weight:750;margin-bottom:7px}
+.field input,.field textarea{width:100%;padding:11px 12px;border:1px solid #dfe5f1;border-radius:10px;font:inherit;font-size:13px}
+.field textarea{height:130px;resize:vertical;font:12px/1.5 monospace}
+.field small{display:block;color:var(--muted);font-size:11px;margin-top:5px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.actions{display:flex;gap:9px;flex-wrap:wrap}
+.btn{border:0;border-radius:10px;padding:12px 16px;font-weight:750;cursor:pointer}
+.primary{background:var(--blue);color:white}
+.secondary{background:var(--soft);color:var(--blue)}
+.btn:disabled{opacity:.5}
+.status{display:none;margin-top:12px;padding:11px;border-radius:9px;font-size:12px;line-height:1.5}
+.status.show{display:block}
+.ok{background:#eaf8f1;color:#13754f}
+.err{background:#fff0f0;color:#b83232}
+.info{background:#edf3ff;color:#3154bd}
+.previewbox{padding:12px;background:#f5f7fc}
+.bar{padding:9px;background:white;border:1px solid var(--line);font-size:11px}
+.preview{width:100%;height:440px;border:1px solid var(--line);background:white}
+.foot{text-align:center;color:#98a3b8;font-size:11px;margin-top:20px}
+@media(max-width:820px){.layout{grid-template-columns:1fr}.preview{height:350px}}
+@media(max-width:520px){.two{grid-template-columns:1fr}.content{padding:15px}}
 </style>
 </head>
-
 <body>
-
-<header>
-  <div class="logo">Web<span>ora</span></div>
-  <span class="small">Website Builder</span>
-</header>
-
-<main>
-
+<header><div class="brand"><span class="logo">W</span>webora</div></header>
+<main class="wrap">
 <section class="hero">
-  <h1>Create your website</h1>
-  <p>Write your code, preview it, and publish your website online.</p>
+<div class="eyebrow">WEBSITE PUBLISHING STUDIO</div>
+<h1>Build it. Preview it. Publish it.</h1>
+<p>নিজের HTML, CSS আর JavaScript দিয়ে ওয়েবসাইট তৈরি করে অনলাইনে প্রকাশ করো।</p>
 </section>
 
-<section class="card">
+<div class="layout">
+<section>
+<div class="panel">
+<div class="head">Create a website <small>01 / EDITOR</small></div>
+<div class="content">
 
-<h2>Website details</h2>
-
-<label for="username">Website username</label>
-<input id="username" placeholder="example: mywebsite" maxlength="40" autocomplete="off">
-
-<p class="small">
-Your website address:
-<b id="urlPreview">Your domain/yourname</b>
-</p>
-
-<div class="grid">
-
-<div>
-<label for="htmlCode">HTML Code</label>
-<textarea id="htmlCode" spellcheck="false" placeholder="<!DOCTYPE html>
-<html>
-<body>
-<h1>Hello World!</h1>
-</body>
-</html>"></textarea>
+<div class="field">
+<label>Website title</label>
+<input id="title" maxlength="150" placeholder="My awesome website">
 </div>
 
-<div>
-<label for="cssCode">CSS Code</label>
-<textarea id="cssCode" spellcheck="false" placeholder="body {
-font-family: Arial;
-text-align: center;
-padding: 40px;
-}"></textarea>
+<div class="field">
+<label>Website description</label>
+<input id="description" maxlength="300" placeholder="A short description">
 </div>
 
+<div class="field">
+<label>Username / website address</label>
+<input id="username" maxlength="40" placeholder="my-website">
+<small>https://webora-lovat.vercel.app/username</small>
 </div>
 
-<label for="jsCode">JavaScript Code</label>
-<textarea id="jsCode" spellcheck="false" placeholder="console.log('Hello Webora!');"></textarea>
+<div class="field">
+<label>HTML code</label>
+<textarea id="html" placeholder="<!doctype html>&#10;<html><body><h1>Hello Webora!</h1></body></html>"></textarea>
+</div>
+
+<div class="field">
+<label>CSS code</label>
+<textarea id="css" placeholder="body { font-family: Arial; }"></textarea>
+</div>
+
+<div class="field">
+<label>JavaScript code</label>
+<textarea id="js" placeholder="console.log('Hello Webora!');"></textarea>
+</div>
 
 <div class="actions">
-<button class="secondary" id="previewBtn">Preview website</button>
-<button class="primary" id="publishBtn">Publish website</button>
+<button class="btn secondary" id="previewBtn">Preview website</button>
+<button class="btn primary" id="publishBtn">Publish website ↗</button>
+</div>
+<div id="publishStatus" class="status"></div>
+</div>
 </div>
 
-<div id="status" class="status"></div>
-<div id="result" class="urlbox"></div>
-
-</section>
-
-<section class="card">
-<h2>Live preview</h2>
-<iframe id="previewFrame" class="preview" sandbox="allow-scripts allow-forms"></iframe>
-</section>
-
-<section class="card">
-
-<h2>Update an existing website</h2>
-
-<p class="small">
-Enter your website username and Edit Key to load and update your website.
-</p>
-
-<label for="editUsername">Website username</label>
-<input id="editUsername" placeholder="your website username">
-
-<label for="editKey">Your Edit Key</label>
-<input id="editKey" placeholder="Paste your Edit Key">
-
+<div class="panel">
+<div class="head">Update an existing website <small>02 / UPDATE</small></div>
+<div class="content">
+<p class="hint">আগের সাইট পরিবর্তন করতে username এবং Publish করার সময় পাওয়া Edit Key দাও।</p>
+<div class="two">
+<div class="field">
+<label>Username</label>
+<input id="editUsername" placeholder="my-website">
+</div>
+<div class="field">
+<label>Edit Key</label>
+<input id="editKey" placeholder="Your edit key">
+</div>
+</div>
 <div class="actions">
-<button class="dark" id="loadBtn">Load website</button>
-<button class="primary" id="updateBtn" disabled>Update website</button>
+<button class="btn secondary" id="loadBtn">Load website</button>
+<button class="btn primary" id="updateBtn">Save changes</button>
 </div>
-
+<div id="editStatus" class="status"></div>
+</div>
+</div>
 </section>
 
+<section class="panel">
+<div class="head">Live preview <small>INSTANT VIEW</small></div>
+<div class="previewbox">
+<div class="bar">● &nbsp; ● &nbsp; ● &nbsp; Your website preview</div>
+<iframe id="preview" class="preview" title="Website preview" sandbox="allow-scripts allow-forms allow-popups"></iframe>
+</div>
+<div class="content">
+<p class="hint">Preview আলাদা sandbox-এ চলে।</p>
+</div>
+</section>
+</div>
+<div class="foot">Webora · Create something worth sharing</div>
 </main>
 
 <script>
-const DB = "https://testfirebase-872d3-default-rtdb.firebaseio.com";
+const DB="https://testfirebase-872d3-default-rtdb.firebaseio.com";
+const DOMAIN="https://webora-lovat.vercel.app";
+const $=id=>document.getElementById(id);
 
-const $ = id => document.getElementById(id);
-
-let loadedUsername = null;
-let loadedKey = null;
-
-function setStatus(message,type=""){
-  $("status").textContent=message;
-  $("status").className="status "+type;
+function status(id,msg,type="info"){
+ const e=$(id);
+ e.textContent=msg;
+ e.className="status show "+type;
 }
 
-function validUsername(name){
-  return /^[a-z0-9](?:[a-z0-9-]{0,38}[a-z0-9])?$/.test(name);
+function uname(v){return String(v||"").trim().toLowerCase()}
+
+function valid(u){
+ return /^[a-z0-9](?:[a-z0-9-]{0,38}[a-z0-9])?$/.test(u)
+ && !["api","sitemap","robots","favicon","_vercel"].includes(u);
 }
 
-function currentCode(){
-  return {
-    html:$("htmlCode").value,
-    css:$("cssCode").value,
-    js:$("jsCode").value
-  };
+function keygen(){
+ const b=new Uint8Array(24);
+ crypto.getRandomValues(b);
+ return [...b].map(x=>x.toString(16).padStart(2,"0")).join("");
 }
 
-function makeDocument(html,css,js){
-  let doc=html.trim();
-  const safeJS=(js||"").replace(/<\/script/gi,"<\\/script");
-
-  if(!doc){
-    doc="<!DOCTYPE html><html><head></head><body></body></html>";
-  }
-
-  if(!/<html[\s>]/i.test(doc)){
-    doc="<!DOCTYPE html><html><head></head><body>"+doc+"</body></html>";
-  }
-
-  if(/<\/head>/i.test(doc)){
-    doc=doc.replace(/<\/head>/i,`<style>${css||""}</style></head>`);
-  }else{
-    doc=doc.replace(/<html[^>]*>/i,m=>m+"<head><style>"+(css||"")+"</style></head>");
-  }
-
-  if(/<\/body>/i.test(doc)){
-    doc=doc.replace(/<\/body>/i,`<script>${safeJS}<\/script></body>`);
-  }else{
-    doc+=`<script>${safeJS}<\/script>`;
-  }
-
-  return doc;
+async function get(u){
+ const r=await fetch(`${DB}/sites/${encodeURIComponent(u)}.json`);
+ if(!r.ok)throw Error("Firebase read failed. Database rules/URL পরীক্ষা করো।");
+ return r.json();
 }
 
-function showPreview(){
-  const c=currentCode();
-  $("previewFrame").srcdoc=makeDocument(c.html,c.css,c.js);
+async function put(u,d){
+ const r=await fetch(`${DB}/sites/${encodeURIComponent(u)}.json`,{
+  method:"PUT",
+  headers:{"Content-Type":"application/json"},
+  body:JSON.stringify(d)
+ });
+ if(!r.ok)throw Error("Firebase save failed. Database rules পরীক্ষা করো।");
+ return r.json();
 }
 
-async function dbGet(username){
-  const response=await fetch(
-    `${DB}/sites/${encodeURIComponent(username)}.json`
-  );
-
-  if(!response.ok){
-    throw new Error("Firebase read failed. Check your Database Rules.");
-  }
-
-  return await response.json();
+function data(){
+ return {
+  title:$("title").value.trim(),
+  description:$("description").value.trim(),
+  html:$("html").value,
+  css:$("css").value,
+  js:$("js").value
+ };
 }
 
-async function dbPut(username,data){
-  const response=await fetch(
-    `${DB}/sites/${encodeURIComponent(username)}.json`,
-    {
-      method:"PUT",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify(data)
-    }
-  );
+function preview(){
+ let d=data();
+ let h=d.html.trim()||"<html><body><h1>Hello Webora</h1></body></html>";
+ let css=d.css.replace(/<\/style/gi,"<\\/style");
+ let js=d.js.replace(/<\/script/gi,"<\\/script");
 
-  if(!response.ok){
-    let message="Firebase write failed. Check your Database Rules.";
+ if(/<head[^>]*>/i.test(h))
+  h=h.replace(/<head[^>]*>/i,m=>m+`<style>${css}</style>`);
+ else
+  h=`<head><style>${css}</style></head>`+h;
 
-    try{
-      const result=await response.json();
-      if(result.error) message=result.error;
-    }catch{}
-
-    throw new Error(message);
-  }
-
-  return await response.json();
+ let s=`<script>${js}<\/script>`;
+ h=/<\/body>/i.test(h)?h.replace(/<\/body>/i,s+"</body>"):h+s;
+ $("preview").srcdoc=h;
 }
 
-function randomKey(){
-  const bytes=new Uint8Array(24);
-  crypto.getRandomValues(bytes);
-
-  return Array.from(
-    bytes,
-    b=>b.toString(16).padStart(2,"0")
-  ).join("");
-}
-
-$("username").addEventListener("input",()=>{
-  const name=$("username").value.trim().toLowerCase()||"yourname";
-  $("urlPreview").textContent=location.origin+"/"+name;
-});
-
-$("previewBtn").addEventListener("click",()=>{
-  showPreview();
-  setStatus("Preview updated.","success");
-});
-
-/* PUBLISH WEBSITE */
-
-$("publishBtn").addEventListener("click",async()=>{
-
-  const username=$("username").value.trim().toLowerCase();
-  const code=currentCode();
-
-  $("result").style.display="none";
-
-  if(!validUsername(username)){
-    setStatus(
-      "Invalid username. Use lowercase letters, numbers and hyphens. Do not start or end with a hyphen.",
-      "error"
-    );
-    return;
-  }
-
-  if(!code.html.trim()){
-    setStatus("Please enter your HTML code first.","error");
-    return;
-  }
-
-  $("publishBtn").disabled=true;
+$("previewBtn").onclick=preview;
+
+$("publishBtn").onclick=async()=>{
+ let u=uname($("username").value);
+ let d=data();
+ let b=$("publishBtn");
 
-  try{
+ if(!valid(u))return status("publishStatus","সঠিক username দাও। ছোট হাতের অক্ষর, সংখ্যা ও hyphen ব্যবহার করো।","err");
+ if(!d.html.trim()||!d.title)return status("publishStatus","Website title এবং HTML code দিতে হবে।","err");
 
-    setStatus("Checking username...");
+ b.disabled=true;
 
-    // Check whether username already exists
-    const existingSite=await dbGet(username);
+ try{
+  if(await get(u)!==null)throw Error("এই username আগে থেকেই নেওয়া হয়েছে।");
 
-    if(existingSite!==null){
-      throw new Error(
-        "This username is already taken. Please choose another one."
-      );
-    }
+  let k=keygen();
+  let now=new Date().toISOString();
 
-    // Create website data
-    const editKey=randomKey();
+  await put(u,{
+   ...d,
+   username:u,
+   editKey:k,
+   createdAt:now,
+   updatedAt:now
+  });
 
-    const site={
-      username:username,
-      html:code.html,
-      css:code.css,
-      js:code.js,
-      editKey:editKey,
-      createdAt:Date.now(),
-      updatedAt:Date.now()
-    };
+  $("editUsername").value=u;
+  $("editKey").value=k;
 
-    setStatus("Publishing your website...");
+  status("publishStatus",`প্রকাশিত! URL: ${DOMAIN}/${u} | Edit Key: ${k} — key-টি কপি করে নিরাপদে রাখো।`,"ok");
 
-    // Save website
-    await dbPut(username,site);
+ }catch(e){
+  status("publishStatus",e.message,"err");
+ }finally{
+  b.disabled=false;
+ }
+};
 
-    const websiteURL=location.origin+"/"+encodeURIComponent(username);
+$("loadBtn").onclick=async()=>{
+ let u=uname($("editUsername").value);
+ let k=$("editKey").value.trim();
+ let b=$("loadBtn");
 
-    $("result").innerHTML=`
-      <b>Website published successfully!</b>
-      <br><br>
-      <a href="${websiteURL}" target="_blank" rel="noopener">${websiteURL}</a>
-      <br><br>
-      <b>Your Edit Key:</b>
-      <br>
-      <code id="newKey"></code>
-      <br>
-      <button class="secondary" id="copyKey" style="margin-top:10px">
-        Copy Edit Key
-      </button>
-      <p class="small">
-        Save this key safely. You need it to update your website.
-      </p>
-    `;
+ if(!valid(u)||!k)return status("editStatus","সঠিক username এবং Edit Key দাও।","err");
 
-    $("newKey").textContent=editKey;
+ b.disabled=true;
 
-    $("copyKey").addEventListener("click",async()=>{
-      try{
-        await navigator.clipboard.writeText(editKey);
-        $("copyKey").textContent="Copied!";
-      }catch{
-        setStatus("Please copy the Edit Key manually.","error");
-      }
-    });
+ try{
+  let s=await get(u);
 
-    $("result").style.display="block";
-    setStatus("Website published successfully!","success");
+  if(!s)throw Error("Website পাওয়া যায়নি।");
+  if(s.editKey!==k)throw Error("Edit Key সঠিক নয়।");
 
-  }catch(error){
+  $("username").value=u;
+  $("title").value=s.title||"";
+  $("description").value=s.description||"";
+  $("html").value=s.html||"";
+  $("css").value=s.css||"";
+  $("js").value=s.js||"";
 
-    setStatus(
-      error.message||"Something went wrong.",
-      "error"
-    );
+  preview();
+  status("editStatus","Website load হয়েছে। পরিবর্তন করে Save changes চাপো।","ok");
 
-  }finally{
-    $("publishBtn").disabled=false;
-  }
+ }catch(e){
+  status("editStatus",e.message,"err");
+ }finally{
+  b.disabled=false;
+ }
+};
 
-});
+$("updateBtn").onclick=async()=>{
+ let u=uname($("editUsername").value);
+ let k=$("editKey").value.trim();
+ let b=$("updateBtn");
 
-/* LOAD EXISTING WEBSITE */
+ if(!valid(u)||!k)return status("editStatus","সঠিক username এবং Edit Key দাও।","err");
 
-$("loadBtn").addEventListener("click",async()=>{
+ b.disabled=true;
 
-  const username=$("editUsername").value.trim().toLowerCase();
-  const key=$("editKey").value.trim();
+ try{
+  let s=await get(u);
+  if(!s||s.editKey!==k)throw Error("Website পাওয়া যায়নি অথবা Edit Key ভুল।");
 
-  $("loadBtn").disabled=true;
-  $("updateBtn").disabled=true;
+  let d=data();
+  if(!d.title||!d.html.trim())throw Error("Title এবং HTML লাগবে।");
 
-  try{
+  await put(u,{
+   ...s,
+   ...d,
+   username:u,
+   editKey:k,
+   updatedAt:new Date().toISOString()
+  });
 
-    if(!validUsername(username)){
-      throw new Error("Please enter a valid username.");
-    }
+  status("editStatus",`Update হয়েছে: ${DOMAIN}/${u}`,"ok");
 
-    if(!key){
-      throw new Error("Please enter your Edit Key.");
-    }
+ }catch(e){
+  status("editStatus",e.message,"err");
+ }finally{
+  b.disabled=false;
+ }
+};
 
-    setStatus("Loading website...");
-
-    const site=await dbGet(username);
-
-    if(!site){
-      throw new Error("Website not found.");
-    }
-
-    if(site.editKey!==key){
-      throw new Error("Incorrect Edit Key.");
-    }
-
-    $("username").value=site.username;
-    $("htmlCode").value=site.html||"";
-    $("cssCode").value=site.css||"";
-    $("jsCode").value=site.js||"";
-
-    $("urlPreview").textContent=location.origin+"/"+site.username;
-
-    loadedUsername=username;
-    loadedKey=key;
-
-    $("updateBtn").disabled=false;
-
-    showPreview();
-
-    setStatus("Website loaded successfully. You can now edit it.","success");
-
-  }catch(error){
-
-    setStatus(error.message,"error");
-
-  }finally{
-    $("loadBtn").disabled=false;
-  }
-
-});
-
-/* UPDATE WEBSITE */
-
-$("updateBtn").addEventListener("click",async()=>{
-
-  const username=$("editUsername").value.trim().toLowerCase();
-  const key=$("editKey").value.trim();
-  const code=currentCode();
-
-  $("updateBtn").disabled=true;
-
-  try{
-
-    if(username!==loadedUsername||key!==loadedKey){
-      throw new Error("Please load the website again with the correct Edit Key.");
-    }
-
-    if(!code.html.trim()){
-      throw new Error("HTML code cannot be empty.");
-    }
-
-    setStatus("Verifying Edit Key...");
-
-    const existingSite=await dbGet(username);
-
-    if(!existingSite){
-      throw new Error("Website not found.");
-    }
-
-    if(existingSite.editKey!==key){
-      throw new Error("Incorrect Edit Key.");
-    }
-
-    const updatedSite={
-      ...existingSite,
-      html:code.html,
-      css:code.css,
-      js:code.js,
-      updatedAt:Date.now()
-    };
-
-    await dbPut(username,updatedSite);
-
-    setStatus("Website updated successfully!","success");
-
-  }catch(error){
-
-    setStatus(error.message,"error");
-
-  }finally{
-    $("updateBtn").disabled=false;
-  }
-
-});
-
+preview();
 </script>
-
 </body>
 </html>
