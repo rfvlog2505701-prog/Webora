@@ -2,135 +2,223 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Webora — Website Builder</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Webora - Website Builder</title>
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#f5f7fc;color:#172033;font-family:Arial,sans-serif}
-header{height:66px;background:#fff;border-bottom:1px solid #e7eaf1;display:flex;align-items:center;justify-content:space-between;padding:0 22px;position:sticky;top:0;z-index:5}
-.logo{font-size:22px;font-weight:800;color:#315bea}
+body{
+  margin:0;
+  background:#f5f7fc;
+  color:#172033;
+  font-family:Arial,sans-serif;
+}
+header{
+  height:66px;
+  background:white;
+  border-bottom:1px solid #e7eaf1;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 22px;
+  position:sticky;
+  top:0;
+  z-index:5;
+}
+.logo{font-size:23px;font-weight:800;color:#315bea}
 .logo span{color:#172033}
 main{max-width:1100px;margin:28px auto;padding:0 16px}
 .hero{margin-bottom:24px}
 .hero h1{font-size:29px;margin:0 0 8px}
 .hero p{color:#718096;margin:0}
-.card{background:#fff;border:1px solid #e6eaf2;border-radius:16px;padding:20px;margin-bottom:18px;box-shadow:0 5px 20px #17203308}
+.card{
+  background:white;
+  border:1px solid #e6eaf2;
+  border-radius:16px;
+  padding:20px;
+  margin-bottom:18px;
+  box-shadow:0 5px 20px #17203308;
+}
 .card h2{font-size:18px;margin:0 0 16px}
-label{font-size:13px;font-weight:700;display:block;margin:13px 0 7px}
-input,textarea{width:100%;border:1px solid #dce2ed;border-radius:9px;padding:12px;font:14px Arial;outline:none;background:#fbfcff;color:#172033}
+label{
+  font-size:13px;
+  font-weight:700;
+  display:block;
+  margin:13px 0 7px;
+}
+input,textarea{
+  width:100%;
+  border:1px solid #dce2ed;
+  border-radius:9px;
+  padding:12px;
+  font:14px Arial;
+  outline:none;
+  background:#fbfcff;
+  color:#172033;
+}
 input:focus,textarea:focus{border-color:#5275ed}
-textarea{min-height:180px;resize:vertical;font-family:monospace;line-height:1.5}
+textarea{
+  min-height:180px;
+  resize:vertical;
+  font-family:monospace;
+  line-height:1.5;
+}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
-button{border:0;border-radius:9px;padding:12px 18px;font-weight:700;cursor:pointer}
+button{
+  border:0;
+  border-radius:9px;
+  padding:12px 18px;
+  font-weight:700;
+  cursor:pointer;
+}
 .primary{background:#315bea;color:white}
 .secondary{background:#edf1ff;color:#315bea}
 .dark{background:#172033;color:white}
 button:disabled{opacity:.55;cursor:not-allowed}
 .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
-.preview{width:100%;height:350px;border:1px solid #e1e5ed;border-radius:10px;background:#fff}
-.status{font-size:13px;margin-top:12px;color:#64748b;white-space:pre-wrap}
+.preview{
+  width:100%;
+  height:350px;
+  border:1px solid #e1e5ed;
+  border-radius:10px;
+  background:white;
+}
+.status{
+  font-size:13px;
+  margin-top:12px;
+  color:#64748b;
+  white-space:pre-wrap;
+  line-height:1.5;
+}
 .status.error{color:#c0392b}
 .status.success{color:#16834a}
-.urlbox{display:none;background:#f0f5ff;padding:14px;border-radius:10px;margin-top:15px;overflow-wrap:anywhere}
+.urlbox{
+  display:none;
+  background:#f0f5ff;
+  padding:14px;
+  border-radius:10px;
+  margin-top:15px;
+  overflow-wrap:anywhere;
+  line-height:1.7;
+}
 .urlbox a{color:#315bea;font-weight:bold}
 .small{font-size:12px;color:#788397;line-height:1.6}
-@media(max-width:650px){header{padding:0 15px}.grid{grid-template-columns:1fr}.hero h1{font-size:24px}.card{padding:15px}main{margin-top:20px}}
+code{overflow-wrap:anywhere}
+@media(max-width:650px){
+  header{padding:0 15px}
+  .grid{grid-template-columns:1fr}
+  .hero h1{font-size:24px}
+  .card{padding:15px}
+  main{margin-top:20px}
+}
 </style>
 </head>
+
 <body>
+
 <header>
   <div class="logo">Web<span>ora</span></div>
   <span class="small">Website Builder</span>
 </header>
 
 <main>
-  <section class="hero">
-    <h1>Create your website</h1>
-    <p>Write your code, preview it, and publish your website online.</p>
-  </section>
 
-  <section class="card">
-    <h2>Website details</h2>
-    <label for="username">Website username</label>
-    <input id="username" placeholder="example: mywebsite" maxlength="40" autocomplete="off">
-    <p class="small">Your website address will be: <b id="urlPreview">https://bora-lovat.vercel.app/yourname</b></p>
+<section class="hero">
+  <h1>Create your website</h1>
+  <p>Write your code, preview it, and publish your website online.</p>
+</section>
 
-    <div class="grid">
-      <div>
-        <label for="htmlCode">HTML Code</label>
-        <textarea id="htmlCode" spellcheck="false" placeholder="<!DOCTYPE html>
+<section class="card">
+
+<h2>Website details</h2>
+
+<label for="username">Website username</label>
+<input id="username" placeholder="example: mywebsite" maxlength="40" autocomplete="off">
+
+<p class="small">
+Your website address:
+<b id="urlPreview">Your domain/yourname</b>
+</p>
+
+<div class="grid">
+
+<div>
+<label for="htmlCode">HTML Code</label>
+<textarea id="htmlCode" spellcheck="false" placeholder="<!DOCTYPE html>
 <html>
 <body>
-  <h1>Hello World!</h1>
+<h1>Hello World!</h1>
 </body>
 </html>"></textarea>
-      </div>
-      <div>
-        <label for="cssCode">CSS Code</label>
-        <textarea id="cssCode" spellcheck="false" placeholder="body {
-  font-family: Arial;
-  text-align: center;
-  padding: 40px;
+</div>
+
+<div>
+<label for="cssCode">CSS Code</label>
+<textarea id="cssCode" spellcheck="false" placeholder="body {
+font-family: Arial;
+text-align: center;
+padding: 40px;
 }"></textarea>
-      </div>
-    </div>
+</div>
 
-    <label for="jsCode">JavaScript Code</label>
-    <textarea id="jsCode" spellcheck="false" placeholder="console.log('Hello Webora!');"></textarea>
+</div>
 
-    <div class="actions">
-      <button class="secondary" id="previewBtn">Preview website</button>
-      <button class="primary" id="publishBtn">Publish website</button>
-    </div>
-    <div id="status" class="status"></div>
-    <div id="result" class="urlbox"></div>
-  </section>
+<label for="jsCode">JavaScript Code</label>
+<textarea id="jsCode" spellcheck="false" placeholder="console.log('Hello Webora!');"></textarea>
 
-  <section class="card">
-    <h2>Live preview</h2>
-    <iframe id="previewFrame" class="preview" sandbox="allow-scripts allow-forms"></iframe>
-  </section>
+<div class="actions">
+<button class="secondary" id="previewBtn">Preview website</button>
+<button class="primary" id="publishBtn">Publish website</button>
+</div>
 
-  <section class="card">
-    <h2>Update an existing website</h2>
-    <p class="small">Enter the username and Edit Key you received when publishing. Then load your website to edit it.</p>
-    <label for="editUsername">Website username</label>
-    <input id="editUsername" placeholder="your website username">
-    <label for="editKey">Your Edit Key</label>
-    <input id="editKey" placeholder="Paste your Edit Key">
-    <div class="actions">
-      <button class="dark" id="loadBtn">Load website</button>
-      <button class="primary" id="updateBtn" disabled>Update website</button>
-    </div>
-  </section>
+<div id="status" class="status"></div>
+<div id="result" class="urlbox"></div>
+
+</section>
+
+<section class="card">
+<h2>Live preview</h2>
+<iframe id="previewFrame" class="preview" sandbox="allow-scripts allow-forms"></iframe>
+</section>
+
+<section class="card">
+
+<h2>Update an existing website</h2>
+
+<p class="small">
+Enter your website username and Edit Key to load and update your website.
+</p>
+
+<label for="editUsername">Website username</label>
+<input id="editUsername" placeholder="your website username">
+
+<label for="editKey">Your Edit Key</label>
+<input id="editKey" placeholder="Paste your Edit Key">
+
+<div class="actions">
+<button class="dark" id="loadBtn">Load website</button>
+<button class="primary" id="updateBtn" disabled>Update website</button>
+</div>
+
+</section>
+
 </main>
 
 <script>
 const DB = "https://testfirebase-872d3-default-rtdb.firebaseio.com";
+
 const $ = id => document.getElementById(id);
+
+let loadedUsername = null;
+let loadedKey = null;
 
 function setStatus(message,type=""){
   $("status").textContent=message;
   $("status").className="status "+type;
 }
 
-function makeDocument(html,css,js){
-  const safeJS=js.replace(/<\/script/gi,"<\\/script");
-  let doc=html.trim() || "<!DOCTYPE html><html><head></head><body></body></html>";
-  if(!/<html[\s>]/i.test(doc)){
-    doc="<!DOCTYPE html><html><head></head><body>"+doc+"</body></html>";
-  }
-  if(/<\/head>/i.test(doc)){
-    doc=doc.replace(/<\/head>/i,`<style>${css}</style></head>`);
-  }else{
-    doc=doc.replace(/<html[^>]*>/i,m=>m+"<head><style>"+css+"</style></head>");
-  }
-  if(/<\/body>/i.test(doc)){
-    doc=doc.replace(/<\/body>/i,`<script>${safeJS}<\/script></body>`);
-  }else{
-    doc+=`<script>${safeJS}<\/script>`;
-  }
-  return doc;
+function validUsername(name){
+  return /^[a-z0-9](?:[a-z0-9-]{0,38}[a-z0-9])?$/.test(name);
 }
 
 function currentCode(){
@@ -141,166 +229,308 @@ function currentCode(){
   };
 }
 
+function makeDocument(html,css,js){
+  let doc=html.trim();
+  const safeJS=(js||"").replace(/<\/script/gi,"<\\/script");
+
+  if(!doc){
+    doc="<!DOCTYPE html><html><head></head><body></body></html>";
+  }
+
+  if(!/<html[\s>]/i.test(doc)){
+    doc="<!DOCTYPE html><html><head></head><body>"+doc+"</body></html>";
+  }
+
+  if(/<\/head>/i.test(doc)){
+    doc=doc.replace(/<\/head>/i,`<style>${css||""}</style></head>`);
+  }else{
+    doc=doc.replace(/<html[^>]*>/i,m=>m+"<head><style>"+(css||"")+"</style></head>");
+  }
+
+  if(/<\/body>/i.test(doc)){
+    doc=doc.replace(/<\/body>/i,`<script>${safeJS}<\/script></body>`);
+  }else{
+    doc+=`<script>${safeJS}<\/script>`;
+  }
+
+  return doc;
+}
+
 function showPreview(){
   const c=currentCode();
   $("previewFrame").srcdoc=makeDocument(c.html,c.css,c.js);
 }
 
-$("previewBtn").addEventListener("click",showPreview);
+async function dbGet(username){
+  const response=await fetch(
+    `${DB}/sites/${encodeURIComponent(username)}.json`
+  );
 
-$("username").addEventListener("input",()=>{
-  const name=$("username").value.trim().toLowerCase() || "yourname";
-  $("urlPreview").textContent="https://bora-lovat.vercel.app/"+name;
-});
+  if(!response.ok){
+    throw new Error("Firebase read failed. Check your Database Rules.");
+  }
 
-function validUsername(name){
-  return /^[a-z0-9](?:[a-z0-9-]{0,38}[a-z0-9])?$/.test(name);
+  return await response.json();
 }
 
-async function request(path,options={}){
-  const response=await fetch(DB+path,options);
-  const body=await response.text();
-  let data=null;
-  try{data=body?JSON.parse(body):null}catch{}
+async function dbPut(username,data){
+  const response=await fetch(
+    `${DB}/sites/${encodeURIComponent(username)}.json`,
+    {
+      method:"PUT",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(data)
+    }
+  );
+
   if(!response.ok){
-    throw new Error(data?.error || ("Firebase error: "+response.status));
+    let message="Firebase write failed. Check your Database Rules.";
+
+    try{
+      const result=await response.json();
+      if(result.error) message=result.error;
+    }catch{}
+
+    throw new Error(message);
   }
-  return data;
+
+  return await response.json();
 }
 
 function randomKey(){
   const bytes=new Uint8Array(24);
   crypto.getRandomValues(bytes);
-  return Array.from(bytes,b=>b.toString(16).padStart(2,"0")).join("");
+
+  return Array.from(
+    bytes,
+    b=>b.toString(16).padStart(2,"0")
+  ).join("");
 }
 
+$("username").addEventListener("input",()=>{
+  const name=$("username").value.trim().toLowerCase()||"yourname";
+  $("urlPreview").textContent=location.origin+"/"+name;
+});
+
+$("previewBtn").addEventListener("click",()=>{
+  showPreview();
+  setStatus("Preview updated.","success");
+});
+
+/* PUBLISH WEBSITE */
+
 $("publishBtn").addEventListener("click",async()=>{
+
   const username=$("username").value.trim().toLowerCase();
-  const {html,css,js}=currentCode();
+  const code=currentCode();
 
   $("result").style.display="none";
 
   if(!validUsername(username)){
-    setStatus("Username must use lowercase letters, numbers, and hyphens. It cannot start or end with a hyphen.","error");
+    setStatus(
+      "Invalid username. Use lowercase letters, numbers and hyphens. Do not start or end with a hyphen.",
+      "error"
+    );
     return;
   }
-  if(!html.trim()){
+
+  if(!code.html.trim()){
     setStatus("Please enter your HTML code first.","error");
     return;
   }
 
   $("publishBtn").disabled=true;
-  setStatus("Publishing your website...");
 
   try{
+
+    setStatus("Checking username...");
+
+    // Check whether username already exists
+    const existingSite=await dbGet(username);
+
+    if(existingSite!==null){
+      throw new Error(
+        "This username is already taken. Please choose another one."
+      );
+    }
+
+    // Create website data
     const editKey=randomKey();
+
     const site={
-      username,html,css,js,editKey,
+      username:username,
+      html:code.html,
+      css:code.css,
+      js:code.js,
+      editKey:editKey,
       createdAt:Date.now(),
       updatedAt:Date.now()
     };
 
-    // Conditional write: create only if this username does not exist.
-    const response=await fetch(`${DB}/sites/${encodeURIComponent(username)}.json`,{
-      method:"PUT",
-      headers:{"Content-Type":"application/json","If-Match":"null"},
-      body:JSON.stringify(site)
-    });
+    setStatus("Publishing your website...");
 
-    const resultText=await response.text();
-    if(response.status===412){
-      throw new Error("This username is already taken. Please choose another one.");
-    }
-    if(!response.ok){
-      let message=resultText;
-      try{message=JSON.parse(resultText).error || resultText}catch{}
-      throw new Error(message || "Could not publish website.");
-    }
+    // Save website
+    await dbPut(username,site);
 
-    const url=location.origin+"/"+encodeURIComponent(username);
-    $("result").innerHTML=
-      `<b>Website published successfully!</b><br><br>
-      <a href="${url}" target="_blank" rel="noopener">${url}</a>
-      <br><br><b>Your Edit Key:</b><br><code id="newKey"></code>
-      <br><button class="secondary" id="copyKey" style="margin-top:10px">Copy Edit Key</button>
-      <p class="small">Save this key somewhere safe. You need it to update your website.</p>`;
+    const websiteURL=location.origin+"/"+encodeURIComponent(username);
+
+    $("result").innerHTML=`
+      <b>Website published successfully!</b>
+      <br><br>
+      <a href="${websiteURL}" target="_blank" rel="noopener">${websiteURL}</a>
+      <br><br>
+      <b>Your Edit Key:</b>
+      <br>
+      <code id="newKey"></code>
+      <br>
+      <button class="secondary" id="copyKey" style="margin-top:10px">
+        Copy Edit Key
+      </button>
+      <p class="small">
+        Save this key safely. You need it to update your website.
+      </p>
+    `;
+
     $("newKey").textContent=editKey;
+
     $("copyKey").addEventListener("click",async()=>{
-      await navigator.clipboard.writeText(editKey);
-      $("copyKey").textContent="Copied!";
+      try{
+        await navigator.clipboard.writeText(editKey);
+        $("copyKey").textContent="Copied!";
+      }catch{
+        setStatus("Please copy the Edit Key manually.","error");
+      }
     });
+
     $("result").style.display="block";
-    setStatus("Your website is now published.","success");
+    setStatus("Website published successfully!","success");
+
   }catch(error){
-    setStatus(error.message || "Something went wrong.","error");
+
+    setStatus(
+      error.message||"Something went wrong.",
+      "error"
+    );
+
   }finally{
     $("publishBtn").disabled=false;
   }
+
 });
+
+/* LOAD EXISTING WEBSITE */
 
 $("loadBtn").addEventListener("click",async()=>{
+
   const username=$("editUsername").value.trim().toLowerCase();
   const key=$("editKey").value.trim();
+
+  $("loadBtn").disabled=true;
   $("updateBtn").disabled=true;
 
-  if(!validUsername(username) || !key){
-    setStatus("Enter a valid username and Edit Key.","error");
-    return;
-  }
-
-  setStatus("Loading your website...");
   try{
-    const site=await request(`/sites/${encodeURIComponent(username)}.json`);
-    if(!site) throw new Error("Website not found.");
-    if(site.editKey!==key) throw new Error("Incorrect Edit Key.");
+
+    if(!validUsername(username)){
+      throw new Error("Please enter a valid username.");
+    }
+
+    if(!key){
+      throw new Error("Please enter your Edit Key.");
+    }
+
+    setStatus("Loading website...");
+
+    const site=await dbGet(username);
+
+    if(!site){
+      throw new Error("Website not found.");
+    }
+
+    if(site.editKey!==key){
+      throw new Error("Incorrect Edit Key.");
+    }
 
     $("username").value=site.username;
-    $("htmlCode").value=site.html || "";
-    $("cssCode").value=site.css || "";
-    $("jsCode").value=site.js || "";
+    $("htmlCode").value=site.html||"";
+    $("cssCode").value=site.css||"";
+    $("jsCode").value=site.js||"";
+
     $("urlPreview").textContent=location.origin+"/"+site.username;
+
+    loadedUsername=username;
+    loadedKey=key;
+
     $("updateBtn").disabled=false;
+
     showPreview();
-    setStatus("Website loaded. You can now edit and update it.","success");
+
+    setStatus("Website loaded successfully. You can now edit it.","success");
+
   }catch(error){
+
     setStatus(error.message,"error");
+
+  }finally{
+    $("loadBtn").disabled=false;
   }
+
 });
 
+/* UPDATE WEBSITE */
+
 $("updateBtn").addEventListener("click",async()=>{
+
   const username=$("editUsername").value.trim().toLowerCase();
   const key=$("editKey").value.trim();
-  const c=currentCode();
+  const code=currentCode();
 
   $("updateBtn").disabled=true;
-  setStatus("Updating website...");
 
   try{
-    const site=await request(`/sites/${encodeURIComponent(username)}.json`);
-    if(!site || site.editKey!==key) throw new Error("Website or Edit Key is incorrect.");
 
-    const updated={
-      ...site,
-      html:c.html,
-      css:c.css,
-      js:c.js,
+    if(username!==loadedUsername||key!==loadedKey){
+      throw new Error("Please load the website again with the correct Edit Key.");
+    }
+
+    if(!code.html.trim()){
+      throw new Error("HTML code cannot be empty.");
+    }
+
+    setStatus("Verifying Edit Key...");
+
+    const existingSite=await dbGet(username);
+
+    if(!existingSite){
+      throw new Error("Website not found.");
+    }
+
+    if(existingSite.editKey!==key){
+      throw new Error("Incorrect Edit Key.");
+    }
+
+    const updatedSite={
+      ...existingSite,
+      html:code.html,
+      css:code.css,
+      js:code.js,
       updatedAt:Date.now()
     };
 
-    const response=await fetch(`${DB}/sites/${encodeURIComponent(username)}.json`,{
-      method:"PUT",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify(updated)
-    });
-    if(!response.ok) throw new Error("Update failed. Please try again.");
+    await dbPut(username,updatedSite);
 
     setStatus("Website updated successfully!","success");
+
   }catch(error){
+
     setStatus(error.message,"error");
+
   }finally{
     $("updateBtn").disabled=false;
   }
+
 });
+
 </script>
+
 </body>
 </html>
