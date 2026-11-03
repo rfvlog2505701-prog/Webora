@@ -1,0 +1,372 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WebNest - Website Hosting</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f7faff;color:#172b46;font-family:Arial,sans-serif}
+header{height:70px;background:white;border-bottom:1px solid #e8eef6;display:flex;align-items:center;justify-content:space-between;padding:0 6%;position:sticky;top:0;z-index:5}
+.logo{font-size:23px;font-weight:800;color:#168cf0}
+.logo span{color:#172b46}
+nav a{color:#63748b;text-decoration:none;margin-left:20px;font-size:13px}
+.hero{text-align:center;padding:65px 15px 35px}
+.tag{color:#168cf0;font-size:11px;font-weight:bold;letter-spacing:2px}
+h1{font-size:clamp(38px,7vw,65px);margin:17px 0;letter-spacing:-2px}
+h1 span{color:#168cf0}
+.hero p{color:#8290a4;line-height:1.7;font-size:14px;max-width:490px;margin:auto}
+.container{max-width:1050px;margin:20px auto 70px;padding:0 16px}
+.card{background:white;border:1px solid #e5edf6;border-radius:19px;padding:25px;box-shadow:0 12px 40px #174b8010}
+.card h2{font-size:20px;margin:0 0 8px}
+.muted{color:#8a98aa;font-size:12px}
+label{display:block;font-size:11px;font-weight:bold;color:#77879b;margin:22px 0 9px}
+input,textarea{font:13px Arial}
+.username{display:flex;border:1px solid #dfe8f2;border-radius:10px;overflow:hidden;height:48px;align-items:center}
+.username span{padding:0 12px;color:#168cf0;font-weight:bold}
+.username input{border:0;outline:none;flex:1;min-width:0;height:100%}
+.tabs{display:flex;gap:7px;margin-top:22px;border-bottom:1px solid #e8edf4}
+.tabs button{border:0;background:none;padding:12px 15px;color:#8290a4;font-weight:bold;cursor:pointer}
+.tabs button.active{color:#168cf0;border-bottom:2px solid #168cf0}
+textarea{width:100%;height:240px;resize:vertical;border:1px solid #e4ebf3;border-radius:0 0 10px 10px;padding:15px;outline:none;background:#fbfdff;color:#354c68;font:12px/1.7 monospace}
+.hidden{display:none}
+.actions{display:flex;gap:10px;margin-top:15px;flex-wrap:wrap}
+button.action{border:0;border-radius:10px;padding:14px 20px;font-weight:bold;cursor:pointer}
+.primary{background:#168cf0;color:white;flex:1}
+.secondary{background:#edf5ff;color:#168cf0}
+button:disabled{opacity:.5}
+.preview{margin-top:22px;border:1px solid #e4ebf3;border-radius:12px;overflow:hidden}
+.preview-head{padding:12px;background:#f5f9ff;font-size:12px;color:#63748b}
+iframe{width:100%;height:320px;border:0;background:white}
+.message{margin-top:15px;padding:12px;border-radius:9px;font-size:12px;display:none;line-height:1.6}
+.message.show{display:block}
+.error{background:#fff0f0;color:#c33}
+.success{background:#e9faf3;color:#13865f}
+.result{display:none;margin-top:20px;background:#eff9ff;border:1px solid #d8efff;border-radius:12px;padding:17px}
+.result a{display:block;word-break:break-all;color:#087bdc;margin:10px 0}
+.result input{width:100%;padding:11px;border:1px solid #dbe8f5;border-radius:8px;margin:6px 0}
+.result small{color:#9b6b2b;line-height:1.5}
+footer{text-align:center;color:#98a5b5;font-size:11px;padding:25px}
+@media(max-width:600px){
+header{padding:0 15px}nav a{margin-left:9px;font-size:11px}
+.hero{padding-top:45px}.card{padding:17px}
+h1{letter-spacing:-1.5px}
+}
+</style>
+</head>
+<body>
+
+<header>
+ <div class="logo">◈ <span>WebNest</span></div>
+ <nav><a href="#publisher">Publisher</a><a href="#how">How it works</a></nav>
+</header>
+
+<section class="hero">
+ <div class="tag">SIMPLE WEBSITE HOSTING</div>
+ <h1>Your website.<br><span>One link away.</span></h1>
+ <p>Write your HTML, CSS and JavaScript. Publish your website and share it with everyone.</p>
+</section>
+
+<main class="container" id="publisher">
+<div class="card">
+ <h2>Create your website</h2>
+ <p class="muted">Choose a username and publish your own website.</p>
+
+ <label>WEBSITE USERNAME</label>
+ <div class="username">
+  <span>/</span>
+  <input id="username" placeholder="yourname" maxlength="30">
+  <span id="domain">.vercel.app</span>
+ </div>
+
+ <div class="tabs">
+  <button class="active" data-tab="html">HTML</button>
+  <button data-tab="css">CSS</button>
+  <button data-tab="js">JavaScript</button>
+ </div>
+
+ <textarea id="html" placeholder="Write your HTML code..."><h1>Hello World!</h1>
+<p>My first published website.</p>
+<button onclick="alert('WebNest works!')">Click me</button></textarea>
+
+ <textarea id="css" class="hidden" placeholder="Write your CSS...">body {
+  font-family: Arial;
+  text-align: center;
+  padding: 60px 15px;
+  background: #f0f7ff;
+  color: #18385c;
+}
+h1 { color: #168cf0; }
+button {
+  padding: 12px 22px;
+  border: 0;
+  border-radius: 8px;
+  background: #168cf0;
+  color: white;
+}</textarea>
+
+ <textarea id="js" class="hidden" placeholder="Write your JavaScript...">console.log("Welcome to WebNest!");</textarea>
+
+ <div class="actions">
+  <button class="action secondary" id="previewBtn">Preview ↗</button>
+  <button class="action primary" id="publishBtn">Publish Website →</button>
+ </div>
+
+ <div class="message" id="message"></div>
+
+ <div class="preview">
+  <div class="preview-head">● Live Preview</div>
+  <iframe id="preview" sandbox="allow-scripts"></iframe>
+ </div>
+
+ <div class="result" id="result">
+  <h3>🎉 Website Published!</h3>
+  <p class="muted">Your website is now online.</p>
+  <a id="liveLink" target="_blank"></a>
+  <button class="action secondary" id="copyLink">Copy Website URL</button>
+  <hr style="border:0;border-top:1px solid #dceaf5;margin:17px 0">
+  <b>Private Edit Key</b>
+  <input id="editKey" readonly>
+  <button class="action secondary" id="copyKey">Copy Edit Key</button>
+  <small>Save this key. You need it to update your website later.</small>
+ </div>
+
+ <hr style="border:0;border-top:1px solid #e8edf4;margin:28px 0">
+
+ <h2>Update existing website</h2>
+ <p class="muted">Enter your username and Edit Key to load your website.</p>
+ <label>USERNAME</label>
+ <input id="editUsername" placeholder="yourname" style="width:100%;padding:13px;border:1px solid #dfe8f2;border-radius:9px">
+ <label>PRIVATE EDIT KEY</label>
+ <input id="editSecret" placeholder="Enter your edit key" style="width:100%;padding:13px;border:1px solid #dfe8f2;border-radius:9px">
+ <div class="actions">
+  <button class="action secondary" id="loadBtn">Load Website</button>
+  <button class="action primary" id="updateBtn">Update Website →</button>
+ </div>
+ <div class="message" id="editMessage"></div>
+</div>
+</main>
+
+<footer id="how">WebNest · Simple website publishing</footer>
+
+<script>
+const FIREBASE_CONFIG = {
+ apiKey: "AIzaSyA1xamm1F6qzEAT1TEfNMpF6xD8HYJsNVo",
+ authDomain: "testfirebase-872d3.firebaseapp.com",
+ databaseURL: "https://testfirebase-872d3-default-rtdb.firebaseio.com",
+ projectId: "testfirebase-872d3",
+ storageBucket: "testfirebase-872d3.firebasestorage.app",
+ messagingSenderId: "70746254150",
+ appId: "1:70746254150:web:348b30cf428dd6d9449347",
+ measurementId: "G-PV17LVJRJK"
+};
+
+const DB = FIREBASE_CONFIG.databaseURL;
+const $ = id => document.getElementById(id);
+let activeTab = "html";
+let loadedKey = "";
+
+function code(){
+ return {
+  html:$("html").value,
+  css:$("css").value,
+  js:$("js").value
+ };
+}
+
+function showMessage(id,text,type){
+ const el=$(id);
+ el.textContent=text;
+ el.className="message show "+type;
+}
+
+function validUsername(u){
+ return /^[a-z0-9](?:[a-z0-9-]{1,28}[a-z0-9])$/.test(u) &&
+ !["api","admin","www","assets","site"].includes(u);
+}
+
+async function dbRequest(path,options={}){
+ const res=await fetch(DB+"/"+path+".json",{
+  ...options,
+  headers:{"Content-Type":"application/json",...(options.headers||{})}
+ });
+ const data=await res.json();
+ if(!res.ok) throw new Error(data?.error||"Database request failed");
+ return data;
+}
+
+function renderPreview(){
+ const c=code();
+ $("preview").srcdoc=
+ `<!doctype html><html><head><meta charset="utf-8">
+ <meta name="viewport" content="width=device-width,initial-scale=1">
+ <style>${c.css.replace(/<\/style/gi,"<\\/style")}</style>
+ </head><body>${c.html}
+ <script>${c.js.replace(/<\/script/gi,"<\\/script")}<\/script>
+ </body></html>`;
+}
+
+$("previewBtn").onclick=renderPreview;
+renderPreview();
+
+document.querySelectorAll("[data-tab]").forEach(btn=>{
+ btn.onclick=()=>{
+  activeTab=btn.dataset.tab;
+  ["html","css","js"].forEach(id=>{
+   $(id).classList.toggle("hidden",id!==activeTab);
+  });
+  document.querySelectorAll("[data-tab]").forEach(b=>{
+   b.classList.toggle("active",b===btn);
+  });
+ };
+});
+
+async function getSite(username){
+ return await dbRequest("sites/"+username);
+}
+
+function makeKey(){
+ const bytes=new Uint8Array(32);
+ crypto.getRandomValues(bytes);
+ return Array.from(bytes,b=>b.toString(16).padStart(2,"0")).join("");
+}
+
+function showResult(username,key){
+ const url=location.origin+"/"+username;
+ $("liveLink").href=url;
+ $("liveLink").textContent=url;
+ $("editKey").value=key;
+ $("result").style.display="block";
+ $("editUsername").value=username;
+ $("editSecret").value=key;
+ $("result").scrollIntoView({behavior:"smooth",block:"center"});
+}
+
+$("publishBtn").onclick=async()=>{
+ const username=$("username").value.trim().toLowerCase();
+ const c=code();
+
+ if(!validUsername(username)){
+  showMessage("message","Please enter a valid username (3–30 characters).","error");
+  return;
+ }
+ if(!c.html.trim()){
+  showMessage("message","Please enter HTML code.","error");
+  return;
+ }
+ if(c.html.length+c.css.length+c.js.length>180000){
+  showMessage("message","Maximum combined code size is 180 KB.","error");
+  return;
+ }
+
+ const btn=$("publishBtn");
+ btn.disabled=true;
+ btn.textContent="Publishing...";
+
+ try{
+  const existing=await getSite(username);
+  if(existing!==null){
+   throw new Error("This username already exists. Use Update Website instead.");
+  }
+
+  const key=makeKey();
+  const now=Date.now();
+
+  const payload={
+   ...c,
+   username,
+   editKey:key,
+   createdAt:now,
+   updatedAt:now,
+   version:1
+  };
+
+  // Firebase REST PUT with null condition is not atomic.
+  // Recheck immediately before writing; test-only approach.
+  const check=await getSite(username);
+  if(check!==null) throw new Error("Username has already been taken.");
+
+  await dbRequest("sites/"+username,{
+   method:"PUT",
+   body:JSON.stringify(payload)
+  });
+
+  showMessage("message","Website published successfully!","success");
+  showResult(username,key);
+ }catch(e){
+  showMessage("message",e.message,"error");
+ }finally{
+  btn.disabled=false;
+  btn.textContent="Publish Website →";
+ }
+};
+
+$("loadBtn").onclick=async()=>{
+ const username=$("editUsername").value.trim().toLowerCase();
+ const key=$("editSecret").value.trim();
+
+ try{
+  if(!validUsername(username)||!key) throw new Error("Enter username and edit key.");
+  const site=await getSite(username);
+  if(!site) throw new Error("Website not found.");
+  if(site.editKey!==key) throw new Error("Incorrect edit key.");
+
+  $("username").value=username;
+  $("html").value=site.html||"";
+  $("css").value=site.css||"";
+  $("js").value=site.js||"";
+  loadedKey=key;
+
+  renderPreview();
+  showMessage("editMessage","Website loaded! You can now edit the code.","success");
+  $("publisher").scrollIntoView({behavior:"smooth"});
+ }catch(e){
+  showMessage("editMessage",e.message,"error");
+ }
+};
+
+$("updateBtn").onclick=async()=>{
+ const username=$("editUsername").value.trim().toLowerCase();
+ const key=$("editSecret").value.trim();
+ const c=code();
+
+ try{
+  if(!validUsername(username)||!key) throw new Error("Enter username and edit key.");
+  if(!c.html.trim()) throw new Error("HTML code is required.");
+
+  const site=await getSite(username);
+  if(!site) throw new Error("Website not found.");
+  if(site.editKey!==key) throw new Error("Incorrect edit key.");
+
+  await dbRequest("sites/"+username,{
+   method:"PUT",
+   body:JSON.stringify({
+    ...site,
+    ...c,
+    updatedAt:Date.now(),
+    version:(site.version||1)+1
+   })
+  });
+
+  loadedKey=key;
+  showMessage("editMessage","Website updated successfully! Your URL remains unchanged.","success");
+  renderPreview();
+ }catch(e){
+  showMessage("editMessage",e.message,"error");
+ }
+};
+
+$("copyLink").onclick=async()=>{
+ await navigator.clipboard.writeText($("liveLink").href);
+ $("copyLink").textContent="Copied!";
+};
+
+$("copyKey").onclick=async()=>{
+ await navigator.clipboard.writeText($("editKey").value);
+ $("copyKey").textContent="Copied!";
+};
+</script>
+</body>
+   </html>
+  
