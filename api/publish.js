@@ -26,7 +26,18 @@ async function resolveCaller(req) {
   return { uid: decoded.uid, viaApi: false };
 }
 
+// CORS: lets browser-based tools / other websites call this API.
+// Auth is still required (X-Api-Key or Bearer token), so this is safe.
+function setCors(res) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST, DELETE, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, X-Api-Key, Authorization");
+  res.setHeader("Access-Control-Max-Age", "86400");
+}
+
 module.exports = async (req, res) => {
+  setCors(res);
+  if (req.method === "OPTIONS") return res.status(204).end();
   try {
     if (req.method === "POST") return await handlePublish(req, res);
     if (req.method === "DELETE") return await handleDelete(req, res);
