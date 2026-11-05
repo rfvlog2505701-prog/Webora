@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Webora — Build and Publish Websites Free</title>
+
+<meta name="theme-color" content="#ffffff">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+<link rel="canonical" href="https://webora-lovat.vercel.app/">
+<meta name="description" content="Webora lets you build, preview and publish a website in seconds. Sign in with Google, write your HTML/CSS/JS and go live instantly.">
+<meta property="og:title" content="Webora — Build and Publish Websites Free">
+<meta property="og:description" content="Sign up, write your site, publish it. Free website publishing with a developer API.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://webora-lovat.vercel.app/">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Webora","url":"https://webora-lovat.vercel.app/"}</script>
+</head>
+<body>
+<div id="webora-loader"><svg class="loader-ring" viewBox="0 0 36 36"><circle cx="18" cy="18" r="14"/></svg><div class="loader-text">Loading Webora…</div></div>
+<main class="wrap">
+<section class="hero">
+<div class="eyebrow">Free website publishing</div>
+<h1>Build. Preview. Publish.</h1>
+<p>Write your own HTML, CSS and JavaScript, or upload an index.html, and go live instantly. Up to 3 websites per account. No credit card required.</p>
+<div class="row"><a class="btn primary" href="/register.html">Create Free Account</a><a class="btn outline" href="/login.html">Log in</a></div>
+<div class="note">Free forever, not a trial.</div>
+<svg class="illus" viewBox="0 0 360 200" fill="none"><ellipse cx="180" cy="186" rx="150" ry="8" fill="#eceef3"/><rect x="40" y="40" width="170" height="120" rx="10" fill="#fff" stroke="#2f3646" stroke-width="4"/><rect x="54" y="56" width="60" height="6" rx="3" fill="#cbd0dc"/><rect x="54" y="68" width="40" height="6" rx="3" fill="#7a35c9"/><rect x="54" y="84" width="60" height="46" rx="4" fill="#d9dce4"/><rect x="124" y="82" width="72" height="8" rx="4" fill="#7a35c9"/><rect x="124" y="98" width="52" height="6" rx="3" fill="#e1e4ea"/><rect x="124" y="112" width="60" height="6" rx="3" fill="#e1e4ea"/><rect x="100" y="160" width="40" height="14" fill="#2f3646"/><rect x="224" y="62" width="56" height="100" rx="9" fill="#fff" stroke="#2f3646" stroke-width="4"/><rect x="234" y="78" width="36" height="6" rx="3" fill="#7a35c9"/><rect x="234" y="92" width="36" height="6" rx="3" fill="#e1e4ea"/><circle cx="252" cy="136" r="8" fill="#7a35c9"/></svg>
+</section>
+<section class="feat">
+<div class="card"><div class="ico-box" id="i1"></div><h3>3 websites per account</h3><p>Write code directly or upload a single index.html file.</p></div>
+<div class="card"><div class="ico-box" id="i2"></div><h3>Custom address styles</h3><p>Publish at /you, you.webora.app, .webora.online or .webora.site.</p></div>
+<div class="card"><div class="ico-box" id="i3"></div><h3>Developer API</h3><p>Publish websites programmatically with one POST request.</p></div>
+</section>
+<div class="foot">Webora · Create something worth sharing</div>
+</main>
+<script type="module">
+import { mountHeader, hideLoader, icons } from "/assets/layout.js";
+mountHeader("public");
+document.getElementById('i1').innerHTML = icons.globe; document.getElementById('i2').innerHTML = icons.code; document.getElementById('i3').innerHTML = icons.key;
+hideLoader();
+</script>
+</body>
+</html>

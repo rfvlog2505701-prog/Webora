@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>My Websites — Webora</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#ffffff">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+<div id="webora-loader"><svg class="loader-ring" viewBox="0 0 36 36"><circle cx="18" cy="18" r="14"/></svg><div class="loader-text">Loading…</div></div>
+<main class="wrap">
+<div class="eyebrow">Websites</div><h1>My Websites</h1>
+<div class="alert" id="limit" style="display:none"><b id="limitT"></b><span>You have reached the maximum of 3 websites. Delete one to create another.</span></div>
+<div class="card">
+<div class="card-h">Your Websites <a class="btn primary" id="createBtn" href="/create.html"></a></div>
+<div class="sep"><input class="search" id="q" placeholder="Search website…"></div>
+<div class="card-f" id="count" style="border:0;border-bottom:1px solid var(--line)"></div>
+<div id="list"></div>
+</div>
+</main>
+<script type="module">
+import { mountHeader, setAvatar, hideLoader, icons, esc, $ } from "/assets/layout.js";
+import { auth, db, ref, get, onAuthStateChanged, signOut } from "/assets/firebase-client.js";
+mountHeader("app", async () => { await signOut(auth); location.href = "/"; });
+$("createBtn").innerHTML = icons.plus + " Create Website";
+$("limitT").innerHTML = icons.warn + " Website limit reached";
+const MAX = 3; let sites = {};
+function render() {
+  const q = $("q").value.trim().toLowerCase(), keys = Object.keys(sites);
+  $("count").textContent = `Active Websites: ${keys.length} / ${MAX}`;
+  const full = keys.length >= MAX;
+  $("limit").style.display = full ? "flex" : "none";
+  $("createBtn").style.display = full ? "none" : "inline-flex";
+  const shown = keys.filter((k) => (sites[k].title + " " + sites[k].path).toLowerCase().includes(q));
+  $("list").innerHTML = shown.length ? shown.map((k) => { const s = sites[k]; return `
+    <div class="site"><div class="l">${icons.globe}<div style="min-width:0"><b>${esc(s.title || s.path)}</b><span>/${esc(s.path)} · updated ${new Date(s.updatedAt).toLocaleDateString()}</span></div></div>
+    <div class="row" style="flex-wrap:nowrap"><a class="btn outline" target="_blank" href="/${encodeURIComponent(s.path)}" aria-label="View">${icons.ext}</a><a class="btn primary" href="/edit.html?key=${encodeURIComponent(k)}">Manage</a></div></div>`; }).join("")
+    : `<div class="empty">${keys.length ? "No matching websites." : "No websites yet — tap “Create Website” to publish your first one."}</div>`;
+}
+$("q").oninput = render;
+onAuthStateChanged(auth, async (u) => {
+  if (!u) return (location.href = "/login.html?next=/dashboard.html");
+  setAvatar(u);
+  const snap = await get(ref(db, `users/${u.uid}/sites`));
+  sites = snap.exists() ? snap.val() : {};
+  render(); hideLoader();
+});
+</script>
+</body>
+</html>
