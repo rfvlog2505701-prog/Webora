@@ -1,8 +1,8 @@
 {
-  "cleanUrls": true,
+  "cleanUrls": false,
   "trailingSlash": false,
   "functions": {
-    "api/ai.js": { "maxDuration": 60 },
+    "api/ai.js": { "maxDuration": 300 },
     "api/projects.js": { "maxDuration": 60 },
     "api/publish.js": { "maxDuration": 60 }
   },
