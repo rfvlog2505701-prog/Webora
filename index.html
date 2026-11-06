@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Webora — Build and Publish Websites Free</title>
+
+<meta name="theme-color" content="#030814">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+<link rel="canonical" href="https://webora-lovat.vercel.app/">
+<meta name="description" content="Webora lets you build, preview and publish a website in seconds. Upload a ZIP, edit multi-file projects, generate sites with AI and go live instantly.">
+<meta property="og:title" content="Webora — Build and Publish Websites Free">
+<meta property="og:description" content="Sign up, write your site, publish it. Free website publishing with a developer API.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://webora-lovat.vercel.app/">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Webora","url":"https://webora-lovat.vercel.app/"}</script>
+</head>
+<body>
+<script src="/assets/boot.js" data-label="Loading Webora…"></script>
+<main class="wrap">
+<section class="hero">
+<div class="fade-up" id="heroLogo"></div>
+<div class="eyebrow fade-up" style="--d:.1s">Website builder &amp; hosting</div>
+<h1 class="fade-up" style="--d:.2s">Build. Preview. Publish.</h1>
+<p class="fade-up" style="--d:.3s">Upload a full ZIP project, edit every file in a pro code editor with live preview, generate sites with AI, and go live instantly. Up to 3 websites per account. No credit card required.</p>
+<div class="row fade-up" style="--d:.4s"><a class="btn primary" href="/auth/register">Create Free Account</a><a class="btn outline" href="/auth/login">Log in</a></div>
+<div class="note fade-up" style="--d:.5s"><span class="pill live">100% Free</span></div>
+</section>
+
+<div class="sec-title reveal">Everything you need</div>
+<section class="tiles" id="tiles"></section>
+<div class="foot">Webora · Create something worth sharing</div>
+</main>
+<script type="module">
+import { mountHeader, hideLoader } from "/assets/layout.js";
+import { orbIcon } from "/assets/anim-icons.js";
+mountHeader("public");
+document.getElementById("heroLogo").innerHTML = window.WeboraLogo("anim").replace('class="wlogo', 'class="hero-logo wlogo');
+const T = [
+  ["WEB", "Multi-file Projects", "Upload ZIPs, nested folders, assets. Download everything anytime.", "zip"],
+  ["CODE", "Pro Code Editor", "Syntax highlighting, autocomplete, find & replace, tabs, formatting.", "code"],
+  ["LIVE", "Live Preview", "Desktop, tablet & mobile preview with real local assets.", "web"],
+  ["AI", "AI Generator", "Describe a site and get real, editable source code.", "ai"],
+  ["VER", "Version History", "Snapshots on every publish, preview and roll back safely.", "history"],
+  ["STATS", "Analytics", "Real, privacy-friendly visits, sources and devices.", "chart"],
+  ["API", "Developer API", "Publish programmatically with one POST request.", "key"],
+  ["FREE", "Free Hosting", "Publish at /you or you.webora.app / .online / .site.", "rocket"],
+];
+document.getElementById("tiles").innerHTML = T.map(([r, t, d, ic], i) => `
+  <div class="card tile lift reveal" style="--d:${(i % 4) * 0.08}s"><div class="ribbon"><span>${r}</span></div><span class="pill">100% Free</span><h3>${t}</h3>${orbIcon(ic)}<p>${d}</p></div>`).join("");
+hideLoader();
+</script>
+</body>
+</html>
