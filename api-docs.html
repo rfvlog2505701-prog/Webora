@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>API documentation — Webora</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#030814">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+<script src="/assets/boot.js" data-label="Loading docs…"></script>
+<main class="wrap mid">
+<div class="eyebrow">Developer</div><h1>API documentation</h1>
+<div class="alert"><b id="w"></b><span>Websites published through the API carry Webora ads on the live page. Dashboard sites do not. Requests are unlimited, but you are still capped at 3 live websites per account.</span></div>
+<div class="card reveal"><div class="card-h">POST /api/publish</div><div class="card-b"><pre class="docblock"><span class="c1"># Create or update a website</span>
+curl -X POST https://webora-lovat.vercel.app/api/publish \
+  -H "Content-Type: application/json" \
+  -H "X-Api-Key: YOUR_API_KEY" \
+  -d '{
+    "path": "my-site",
+    "title": "My Site",
+    "description": "Made via the Webora API",
+    "html": "&lt;h1&gt;Hello from the API&lt;/h1&gt;",
+    "css": "h1{color:#7a35c9}",
+    "js": "",
+    "mode": "create"
+  }'
+
+<span class="c1"># Response</span>
+{ "ok": true, "path": "my-site", "url": "https://webora-lovat.vercel.app/my-site" }</pre>
+<p class="sub" style="margin:12px 0 0"><code>path</code> can also be <code>my-site.webora.app</code>, <code>.webora.online</code> or <code>.webora.site</code>. <code>mode</code> is <code>create</code> or <code>update</code>.</p></div></div>
+<div class="card reveal"><div class="card-h">DELETE /api/publish</div><div class="card-b"><pre class="docblock">curl -X DELETE https://webora-lovat.vercel.app/api/publish \
+  -H "Content-Type: application/json" \
+  -H "X-Api-Key: YOUR_API_KEY" \
+  -d '{ "path": "my-site" }'</pre></div>
+<div class="card-f">Don't have a key yet? <a class="link" href="/api-key.html">Get your API key</a></div></div>
+</main>
+<script type="module">
+import { mountHeader, hideLoader, icons } from "/assets/layout.js";
+import { auth, onAuthStateChanged, signOut } from "/assets/firebase-client.js";
+mountHeader("app", async () => { await signOut(auth); location.href = "/"; });
+document.getElementById("w").innerHTML = icons.warn + " Ads on API sites";
+onAuthStateChanged(auth, (u) => { if (!u) return (location.href = "/login.html?next=/api-docs.html"); hideLoader(); });
+</script>
+</body>
+</html>

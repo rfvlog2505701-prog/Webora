@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Website Generator — Webora</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#030814">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+<script src="/assets/boot.js" data-label="Loading AI…"></script>
+<main class="wrap mid">
+<div class="eyebrow">AI</div><h1>AI Website Generator</h1>
+<p class="sub">Describe the website you want. You get real HTML, CSS and JavaScript files in a <b>draft</b> project — review the preview, edit, and publish only when you're happy.</p>
+<div class="card reveal"><div class="card-h"><span>Describe your website</span></div><div class="card-b" id="host"></div></div>
+</main>
+<script type="module">
+import { mountHeader, setAvatar, hideLoader, toast, icons } from "/assets/layout.js";
+import { auth, onAuthStateChanged, signOut } from "/assets/firebase-client.js";
+import { api, } from "/assets/api.js";
+import { mountAIGenerator } from "/assets/aigen.js";
+import { uploadBatches } from "/assets/zip.js";
+mountHeader("app", async () => { await signOut(auth); location.href = "/"; });
+mountAIGenerator(document.getElementById("host"), {
+  applyLabel: "Create project & open in editor",
+  onApply: async (files) => {
+    const c = await api("create", { name: "AI website" });
+    try { await uploadBatches(api, c.pid, files); }
+    catch (e) { api("delete", { pid: c.pid }).catch(() => {}); throw e; }
+    toast("Draft project created", "ok"); location.href = "/studio.html?pid=" + c.pid;
+  },
+});
+onAuthStateChanged(auth, (u) => { if (!u) return (location.href = "/login.html?next=/ai.html"); setAvatar(u); hideLoader(); });
+</script>
+</body>
+</html>

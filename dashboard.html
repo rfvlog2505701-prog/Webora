@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>My Websites — Webora</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#030814">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+<script src="/assets/boot.js" data-label="Loading dashboard…"></script>
+<main class="wrap">
+<div class="eyebrow">Dashboard</div><h1>My Websites</h1>
+<div class="alert" id="limit" style="display:none"><b id="limitT"></b><span>You have reached the maximum of 3 live websites. Delete one to publish another.</span></div>
+<div class="row" style="margin-bottom:18px"><a class="btn primary" id="createBtn" href="/create.html"></a><a class="btn outline" href="/ai.html" id="aiBtn"></a></div>
+<input class="search" id="q" placeholder="Search websites and projects…" style="margin-bottom:6px">
+<div class="sec-title reveal">Live websites</div>
+<div class="sub" id="count" style="text-align:center"></div>
+<div class="tiles" id="sites"></div>
+<div class="sec-title reveal">Draft projects</div>
+<div class="tiles" id="drafts"></div>
+<div id="err"></div>
+</main>
+<script type="module">
+import { mountHeader, setAvatar, hideLoader, icons, esc, $, toast, confirmBox, miniLoader } from "/assets/layout.js";
+import { auth, db, ref, get, onAuthStateChanged, signOut } from "/assets/firebase-client.js";
+import { api } from "/assets/api.js";
+import { orbIcon } from "/assets/anim-icons.js";
+mountHeader("app", async () => { await signOut(auth); location.href = "/"; });
+$("createBtn").innerHTML = icons.plus + " New project";
+$("aiBtn").innerHTML = icons.sparkle + " AI Generator";
+$("limitT").innerHTML = icons.warn + " Website limit reached";
+const MAX = 3; let sites = {}, projects = [];
+const when = (t) => t ? new Date(t).toLocaleDateString() : "—";
+function render() {
+  const q = $("q").value.trim().toLowerCase(), keys = Object.keys(sites);
+  const pmap = {}; projects.forEach((p) => { if (p.siteKey) pmap[p.siteKey] = p; });
+  $("count").textContent = `Active Websites: ${keys.length} / ${MAX}`;
+  $("limit").style.display = keys.length >= MAX ? "flex" : "none";
+  const shown = keys.filter((k) => ((sites[k].title || "") + " " + sites[k].path).toLowerCase().includes(q));
+  $("sites").innerHTML = shown.length ? shown.map((k, i) => { const s = sites[k], p = pmap[k]; return `
+    <div class="card tile lift reveal" style="--d:${i * .08}s"><div class="ribbon"><span>LIVE</span></div>
+      <span class="pill live">${p && p.hasUnpublished ? "Unpublished changes" : "Online"}</span>
+      <h3 style="font-size:16px;word-break:break-word">${esc(s.title || s.path)}</h3>${orbIcon("web")}
+      <p>/${esc(s.path)} · updated ${when(s.updatedAt)}</p>
+      <div class="row" style="width:100%;justify-content:center">
+        <a class="btn sm outline" target="_blank" rel="noopener" href="/${encodeURIComponent(s.path)}">${icons.ext} View</a>
+        <a class="btn sm outline" href="/analytics.html?key=${encodeURIComponent(k)}">${icons.chart} Stats</a></div>
+      ${p ? `<a class="btn primary" href="/studio.html?pid=${p.pid}">${icons.code} Open Studio</a>` : `<button class="btn primary" data-import="${esc(k)}">${icons.code} Open in Studio</button>`}
+      ${p ? "" : `<a class="link" style="font-size:12px" href="/edit.html?key=${encodeURIComponent(k)}">Classic editor</a>`}
+    </div>`; }).join("") : `<div class="empty" style="grid-column:1/-1">${keys.length ? "No matching websites." : "No live websites yet — create a project and press Publish."}</div>`;
+  const drafts = projects.filter((p) => !p.siteKey && p.name.toLowerCase().includes(q));
+  $("drafts").innerHTML = drafts.length ? drafts.map((p, i) => `
+    <div class="card tile lift reveal" style="--d:${i * .08}s"><div class="ribbon"><span>DRAFT</span></div>
+      <span class="pill draft">Not published</span><h3 style="font-size:16px;word-break:break-word">${esc(p.name)}</h3>${orbIcon("folder")}
+      <p>${p.fileCount} files · updated ${when(p.updatedAt)}</p>
+      <a class="btn primary" href="/studio.html?pid=${p.pid}">${icons.code} Open Studio</a>
+      <button class="btn sm danger" data-del="${p.pid}" data-name="${esc(p.name)}">${icons.trash} Delete</button></div>`).join("")
+    : `<div class="empty" style="grid-column:1/-1">No draft projects. Start one with “New project”.</div>`;
+}
+document.addEventListener("click", async (e) => {
+  const im = e.target.closest("[data-import]"), dl = e.target.closest("[data-del]");
+  if (im) { im.disabled = true; try { const r = await api("importSite", { siteKey: im.dataset.import }); location.href = "/studio.html?pid=" + r.pid; } catch (er) { toast(er.message, "err"); im.disabled = false; } }
+  if (dl && await confirmBox("Delete project?", `"${dl.dataset.name}" and all its versions will be permanently deleted.`, "Delete", true)) {
+    try { await api("delete", { pid: dl.dataset.del }); projects = projects.filter((p) => p.pid !== dl.dataset.del); render(); toast("Project deleted", "ok"); } catch (er) { toast(er.message, "err"); }
+  }
+});
+$("q").oninput = render;
+onAuthStateChanged(auth, async (u) => {
+  if (!u) return (location.href = "/login.html?next=/dashboard.html");
+  setAvatar(u);
+  $("sites").innerHTML = miniLoader("Loading your websites…");
+  const [s, p] = await Promise.allSettled([get(ref(db, `users/${u.uid}/sites`)), api("list")]);
+  sites = s.status === "fulfilled" && s.value.exists() ? s.value.val() : {};
+  projects = p.status === "fulfilled" ? p.value.projects : [];
+  if (p.status === "rejected") $("err").innerHTML = `<div class="status show err">Couldn't load projects: ${esc(p.reason.message)}</div>`;
+  render(); hideLoader();
+});
+</script>
+</body>
+</html>
