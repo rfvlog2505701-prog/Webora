@@ -1,0 +1,36 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "functions": {
+    "api/ai.js": { "maxDuration": 300 },
+    "api/projects.js": { "maxDuration": 60 },
+    "api/publish.js": { "maxDuration": 60 }
+  },
+  "redirects": [
+    { "source": "/login.html", "destination": "/auth/login", "permanent": true },
+    { "source": "/register.html", "destination": "/auth/register", "permanent": true },
+    { "source": "/dashboard.html", "destination": "/app/dashboard", "permanent": true },
+    { "source": "/create.html", "destination": "/app/create", "permanent": true },
+    { "source": "/studio.html", "destination": "/app/studio", "permanent": true },
+    { "source": "/ai.html", "destination": "/app/ai", "permanent": true },
+    { "source": "/api-key.html", "destination": "/app/api-key", "permanent": true },
+    { "source": "/api-docs.html", "destination": "/app/api-docs", "permanent": true },
+    { "source": "/analytics.html", "destination": "/app/analytics", "permanent": true },
+    { "source": "/edit.html", "destination": "/app/edit", "permanent": true }
+  ],
+  "rewrites": [
+    { "source": "/sitemap.xml", "destination": "/api/sitemap" },
+    { "source": "/auth/login", "destination": "/login.html" },
+    { "source": "/auth/register", "destination": "/register.html" },
+    { "source": "/app/dashboard", "destination": "/dashboard.html" },
+    { "source": "/app/create", "destination": "/create.html" },
+    { "source": "/app/studio", "destination": "/studio.html" },
+    { "source": "/app/ai", "destination": "/ai.html" },
+    { "source": "/app/api-key", "destination": "/api-key.html" },
+    { "source": "/app/api-docs", "destination": "/api-docs.html" },
+    { "source": "/app/analytics", "destination": "/analytics.html" },
+    { "source": "/app/edit", "destination": "/edit.html" },
+    { "source": "/:username", "destination": "/api/site?username=:username" },
+    { "source": "/:username/:path*", "destination": "/api/site?username=:username&p=:path*" }
+  ]
+}

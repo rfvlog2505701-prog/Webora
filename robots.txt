@@ -1,0 +1,5 @@
+
+User-agent: *
+Allow: /
+
+Sitemap: https://webora-lovat.vercel.app/sitemap.xml
