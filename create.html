@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Create website — Webora</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#030814">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+<script src="/assets/boot.js" data-label="Loading…"></script>
+<main class="wrap"><div id="root"></div></main>
+<script type="module">
+import { mountHeader, setAvatar, hideLoader, icons, esc, $, toast, modal, status } from "/assets/layout.js";
+import { auth, onAuthStateChanged, signOut } from "/assets/firebase-client.js";
+import { api } from "/assets/api.js";
+import { orbIcon } from "/assets/anim-icons.js";
+import { readZip, uploadBatches } from "/assets/zip.js";
+import { fmtBytes } from "/assets/fileutil.js";
+
+if (new URLSearchParams(location.search).get("mode") === "quick") {
+  const { initEditor } = await import("/assets/editor.js");
+  initEditor("create");
+} else {
+  mountHeader("app", async () => { await signOut(auth); location.href = "/"; });
+  $("root").innerHTML = `
+    <div class="eyebrow">New</div><h1>Create a project</h1><p class="sub">Choose how to start. Everything is saved as a draft — nothing goes live until you publish.</p>
+    <div class="tiles">
+      <div class="card tile lift reveal" data-go="zip"><div class="ribbon"><span>ZIP</span></div><span class="pill">100% Free</span><h3>Upload ZIP</h3>${orbIcon("zip")}<p>Import a complete website with folders, CSS, JS, images and fonts.</p><button class="btn primary">Choose ZIP</button></div>
+      <div class="card tile lift reveal" data-go="blank" style="--d:.08s"><div class="ribbon"><span>NEW</span></div><span class="pill">100% Free</span><h3>Start from scratch</h3>${orbIcon("code")}<p>A starter project with HTML, CSS and JS files — or an empty one.</p><button class="btn primary">Start</button></div>
+      <a class="card tile lift reveal" href="/app/ai" style="--d:.16s"><div class="ribbon"><span>AI</span></div><span class="pill">100% Free</span><h3>AI Generator</h3>${orbIcon("ai")}<p>Describe your site and get real, editable source code.</p><span class="btn primary">Generate</span></a>
+      <a class="card tile lift reveal" href="/app/create?mode=quick" style="--d:.24s"><div class="ribbon"><span>QUICK</span></div><span class="pill">Classic</span><h3>Quick editor</h3>${orbIcon("web")}<p>The original single-page HTML/CSS/JS editor and publisher.</p><span class="btn outline">Open</span></a>
+    </div>
+    <div id="zipPane" style="display:none;margin-top:26px"></div>`;
+  const input = document.createElement("input"); input.type = "file"; input.accept = ".zip,application/zip"; input.hidden = true; document.body.appendChild(input);
+  let busy = false;
+
+  async function handleZip(file) {
+    if (busy) return; busy = true;
+    const pane = $("zipPane"); pane.style.display = "block"; pane.scrollIntoView({ behavior: "smooth" });
+    pane.innerHTML = `<div class="card"><div class="card-b"><b>Reading ${esc(file.name)}…</b><div class="progress"><i id="zp"></i></div></div></div>`;
+    try {
+      const z = await readZip(file, (p) => ($("zp").style.width = Math.round(p * 100) + "%"));
+      const base = file.name.replace(/\.zip$/i, "").replace(/[-_]+/g, " ").trim().slice(0, 60) || "Imported project";
+      pane.innerHTML = `<div class="card"><div class="card-h"><span>ZIP checked ${icons.check}</span><span class="chip live">Safe</span></div><div class="card-b">
+        <div class="stats" style="margin-bottom:12px"><div class="card stat" style="margin:0"><small>Files</small><b>${z.files.length}</b></div><div class="card stat" style="margin:0"><small>Size</small><b style="font-size:20px">${fmtBytes(z.total)}</b></div><div class="card stat" style="margin:0"><small>Project root</small><b style="font-size:16px">${esc(z.root)}</b></div></div>
+        ${z.skipped.length ? `<div class="alert"><b>${icons.warn} ${z.skipped.length} item(s) skipped</b><span>${z.skipped.slice(0, 6).map((s) => esc(s.path + " — " + s.reason)).join("<br>")}${z.skipped.length > 6 ? "<br>…" : ""}</span></div>` : ""}
+        <div class="field"><label>Project name</label><input id="zName" maxlength="60" value="${esc(base)}"><small>A new project is always created — your existing projects are never overwritten.</small></div>
+        <div class="row"><button class="btn primary" id="zGo">${icons.upload} Create project</button><button class="btn outline" id="zCancel">Cancel</button></div>
+        <div class="progress" style="display:none" id="zProg"><i></i></div><div id="zSt" class="status"></div></div></div>`;
+      $("zCancel").onclick = () => { pane.style.display = "none"; busy = false; };
+      $("zGo").onclick = async () => {
+        $("zGo").disabled = true; $("zProg").style.display = "block"; status("zSt", "Creating project…");
+        let pid = null;
+        try {
+          const c = await api("create", { name: $("zName").value }); pid = c.pid;
+          await uploadBatches(api, pid, z.files, (p) => ($("zProg").firstChild.style.width = Math.round(p * 100) + "%"));
+          status("zSt", "Done! Opening Studio…", "ok"); location.href = "/app/studio?pid=" + pid;
+        } catch (e) {
+          status("zSt", "Upload failed: " + e.message, "err"); $("zGo").disabled = false;
+          if (pid) api("delete", { pid }).catch(() => {}); // don't leave a half-uploaded project behind
+        }
+      };
+    } catch (e) { pane.innerHTML = `<div class="status show err">${esc(e.message)}</div><div class="row" style="margin-top:12px"><button class="btn outline" id="zRetry">Choose another ZIP</button></div>`; $("zRetry").onclick = () => { busy = false; input.click(); }; }
+    busy = false;
+  }
+  input.onchange = () => { if (input.files[0]) handleZip(input.files[0]); input.value = ""; };
+  document.addEventListener("click", async (e) => {
+    const t = e.target.closest("[data-go]"); if (!t) return;
+    if (t.dataset.go === "zip") return input.click();
+    const v = await modal({ title: "New project", body: `<div class="field"><label>Project name</label><input id="bn" maxlength="60" value="My website"></div><div class="field" style="margin:0"><label>Template</label><select id="bt"><option value="starter">Starter (index.html + css + js)</option><option value="empty">Empty project</option></select></div>`,
+      actions: [{ label: "Cancel", value: null }, { label: "Create", cls: "primary", keep: true, onClick: (bg, done) => done({ name: bg.querySelector("#bn").value, template: bg.querySelector("#bt").value }) }] });
+    if (!v) return;
+    try { const r = await api("create", v); location.href = "/app/studio?pid=" + r.pid; } catch (er) { toast(er.message, "err"); }
+  });
+  ["dragover", "drop"].forEach((n) => document.addEventListener(n, (e) => { e.preventDefault(); if (n === "drop" && e.dataTransfer.files[0]) handleZip(e.dataTransfer.files[0]); }));
+  onAuthStateChanged(auth, (u) => { if (!u) return (location.href = "/auth/login?next=/app/create"); setAvatar(u); hideLoader(); });
+}
+</script>
+</body>
+</html>

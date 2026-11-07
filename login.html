@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Log in — Webora</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#030814">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+<script src="/assets/boot.js" data-label="Loading…"></script>
+<main class="wrap narrow">
+<div class="eyebrow">Account</div><h1>Log in</h1>
+<div class="card reveal"><div class="card-b">
+<button class="btn outline block" id="googleBtn" type="button"></button>
+<div class="divider">OR</div>
+<div class="field"><label>Email</label><input id="email" type="email" placeholder="you@example.com" autocomplete="email"></div>
+<div class="field"><label>Password</label><input id="password" type="password" placeholder="••••••••" autocomplete="current-password"></div>
+<button class="btn primary block" id="loginBtn">Log in</button>
+<div id="st" class="status"></div>
+</div><div class="card-f">New here? <a class="link" href="/auth/register">Create a free account</a></div></div>
+</main>
+<script type="module">
+import { mountHeader, icons, $, status } from "/assets/layout.js";
+import { auth, signInWithEmailAndPassword } from "/assets/firebase-client.js";
+import { redirectIfLoggedIn, googleLogin, goNext } from "/assets/auth.js";
+mountHeader("public"); redirectIfLoggedIn();
+$("googleBtn").innerHTML = icons.google + " Continue with Google";
+$("googleBtn").onclick = () => googleLogin().catch((e) => status("st", e.message, "err"));
+$("loginBtn").onclick = async () => {
+  const email = $("email").value.trim(), pw = $("password").value;
+  if (!email || !pw) return status("st", "Enter your email and password.", "err");
+  $("loginBtn").disabled = true;
+  try { await signInWithEmailAndPassword(auth, email, pw); goNext(); }
+  catch (e) { status("st", "Login failed: " + e.message.replace("Firebase: ", ""), "err"); }
+  finally { $("loginBtn").disabled = false; }
+};
+</script>
+</body>
+</html>
