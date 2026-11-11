@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>API documentation — Webora</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#f6f4ff">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+<link rel="stylesheet" href="/assets/wevlo.css">
+</head>
+<body>
+<script src="/assets/boot.js" data-label="Loading docs…"></script>
+<main class="wrap mid">
+<div class="eyebrow">Developer</div><h1>API documentation</h1>
+<div class="alert"><b id="w"></b><span>Every published website shows Webora ads. There is no limit on the number of websites you can publish.</span></div>
+<div class="card reveal"><div class="card-h">POST /api/publish</div><div class="card-b"><pre class="docblock"><span class="c1"># Create or update a website</span>
+curl -X POST https://webora-lovat.vercel.app/api/publish \
+  -H "Content-Type: application/json" \
+  -H "X-Api-Key: YOUR_API_KEY" \
+  -d '{
+    "path": "my-site",
+    "title": "My Site",
+    "description": "Made via the Webora API",
+    "html": "&lt;h1&gt;Hello from the API&lt;/h1&gt;",
+    "css": "h1{color:#7a35c9}",
+    "js": "",
+    "mode": "create"
+  }'
+
+<span class="c1"># Response</span>
+{ "ok": true, "path": "my-site", "url": "https://webora-lovat.vercel.app/my-site" }</pre>
+<p class="sub" style="margin:12px 0 0"><code>path</code> can also be <code>my-site.webora.app</code>, <code>.webora.online</code> or <code>.webora.site</code>. <code>mode</code> is <code>create</code> or <code>update</code>.</p></div></div>
+<div class="card reveal"><div class="card-h">POST /api/image</div><div class="card-b"><pre class="docblock"><span class="c1"># Upload an image (PNG, JPG, GIF, WEBP, max 3 MB each, no daily limit)</span>
+curl -X POST https://webora-lovat.vercel.app/api/image \
+  -H "Content-Type: application/json" \
+  -H "X-Api-Key: YOUR_API_KEY" \
+  -d '{ "name": "logo", "data": "BASE64_IMAGE_DATA" }'
+
+<span class="c1"># Response</span>
+{ "ok": true, "id": "a1b2c3d4e5f60718", "url": "https://webora-lovat.vercel.app/i/a1b2c3d4e5f60718.png" }</pre>
+<p class="sub" style="margin:12px 0 0">Use the returned <code>url</code> directly in <code>&lt;img src&gt;</code> or CSS. It is served from Webora, never from a third-party host.</p></div></div>
+<div class="card reveal"><div class="card-h">DELETE /api/publish</div><div class="card-b"><pre class="docblock">curl -X DELETE https://webora-lovat.vercel.app/api/publish \
+  -H "Content-Type: application/json" \
+  -H "X-Api-Key: YOUR_API_KEY" \
+  -d '{ "path": "my-site" }'</pre></div>
+<div class="card-f">Don't have a key yet? <a class="link" href="/app/api-key">Get your API key</a></div></div>
+</main>
+<script type="module">
+import { mountHeader, hideLoader, icons } from "/assets/layout.js";
+import { auth, onAuthStateChanged, signOut } from "/assets/firebase-client.js";
+mountHeader("app", async () => { await signOut(auth); location.href = "/"; });
+document.getElementById("w").innerHTML = icons.warn + " Ads on API sites";
+onAuthStateChanged(auth, (u) => { if (!u) return (location.href = "/auth/login?next=/app/api-docs"); hideLoader(); });
+</script>
+</body>
+</html>
