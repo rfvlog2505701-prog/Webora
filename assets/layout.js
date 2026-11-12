@@ -135,17 +135,17 @@ export function setAvatar(user) {
 const T0 = performance.now();
 export function mountLoader(label = "Loading…") {
   let el = document.getElementById("webora-loader");
-  if (el) { const t = el.querySelector(".loader-text"); if (t) t.textContent = label; el.classList.remove("hide"); return el; }
+  if (el) { const t = el.querySelector(".wl-text"); if (t) t.textContent = label; el.classList.remove("hide"); return el; }
   el = document.createElement("div");
   el.id = "webora-loader";
-  el.innerHTML = `<div class="ld-stage"><div class="ld-glow"></div>${window.WeboraLogo ? window.WeboraLogo("anim") : ""}</div><div class="ld-bar"><i></i></div><div class="loader-text">${label}</div>`;
+  el.innerHTML = window.WeboraLoaderHTML ? window.WeboraLoaderHTML(label) : "";
   document.body.appendChild(el);
   return el;
 }
 export function hideLoader() {
   const el = document.getElementById("webora-loader");
   if (!el) return;
-  const wait = Math.max(0, 250 - (performance.now() - T0)); // let the logo draw-in finish once
+  const wait = Math.max(0, 650 - (performance.now() - T0)); // let the logo pop + W draw-in finish once
   setTimeout(() => { el.classList.add("hide"); setTimeout(() => el.remove(), 250); }, wait);
 }
 // small inline loader for panels (re-uses the animated logo)
