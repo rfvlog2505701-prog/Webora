@@ -118,6 +118,34 @@
     var t = document.getElementById("ld-text");
     if (t) t.textContent = "Still loading… check your connection";
   }, 7000);
+
+  // ── Show the same loader the moment the user opens another page/activity.
+  window.WeboraShowLoader = function (label) {
+    var old = document.getElementById("webora-loader");
+    if (old) old.remove();
+    var l = document.createElement("div");
+    l.id = "webora-loader";
+    l.innerHTML = window.WeboraLoaderHTML(label || "Loading…");
+    document.body.appendChild(l);
+    clearTimeout(window.__wlSafe);
+    window.__wlSafe = setTimeout(function () { l.remove(); }, 10000); // navigation cancelled → never stay stuck
+  };
+  document.addEventListener("click", function (e) {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var a = e.target.closest && e.target.closest("a[href]");
+    if (!a || a.target === "_blank" || a.hasAttribute("download")) return;
+    var u;
+    try { u = new URL(a.href, location.href); } catch (x) { return; }
+    if (u.origin !== location.origin || !/^https?:$/.test(u.protocol)) return;
+    if (u.pathname === location.pathname && u.search === location.search) return; // same page / #hash
+    window.WeboraShowLoader("Loading…");
+  }, true);
+  addEventListener("beforeunload", function () {
+    if (!document.getElementById("webora-loader")) window.WeboraShowLoader("Loading…");
+  });
+  addEventListener("pageshow", function (e) { // back button (cached page) → remove leftover loader
+    if (e.persisted) { var l = document.getElementById("webora-loader"); if (l) l.remove(); }
+  });
 })();
 
 /* Adsterra on app pages (not on login/register). Social bar + popunder. */
