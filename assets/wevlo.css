@@ -1,0 +1,133 @@
+/* Webora — "Wevlo" style: light lavender, violet gradients, big rounded cards, floating bottom nav.
+   Loaded AFTER style.css / studio.css so it re-themes everything via tokens + a few overrides. */
+:root{
+  --bg:#f6f4ff;--bg2:#fff;--ink:#14103a;--muted:#6b6590;--line:#e6e0fb;
+  --p:#5b21e6;--pd:#4318b8;--p2:#8b5cf6;--soft:#ece8fd;
+  --warn:#9a6a09;--warnbg:#fff7e6;--warnline:#f3d9a0;--okc:#0e9a79;--errc:#d1405a;
+  --card1:#fff;--card2:#fff;--panel:rgba(246,244,255,.92);--panel-solid:#fff;
+  --field:#fff;--surface:#fff;--surface2:#f1eefe;
+  --glow:0 6px 24px -14px rgba(91,33,230,.28);
+  --font-d:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --ease:cubic-bezier(.2,.7,.2,1);
+}
+:root[data-theme="dark"]{
+  --bg:#0e0b1f;--bg2:#15102c;--ink:#f3f0ff;--muted:#a79fd0;--line:rgba(167,139,250,.2);
+  --soft:rgba(139,92,246,.16);--card1:#1a1535;--card2:#1a1535;--panel:rgba(14,11,31,.92);--panel-solid:#15102c;
+  --field:#120e27;--surface:#1a1535;--surface2:#120e27;--warn:#f5b53d;--warnbg:rgba(245,181,61,.1);--warnline:rgba(245,181,61,.3);
+  --glow:0 8px 28px -14px rgba(0,0,0,.7);
+}
+html{color-scheme:light}html[data-theme="dark"]{color-scheme:dark}
+body{background:var(--bg);color:var(--ink)}
+::selection{background:rgba(139,92,246,.3)}
+.bg-grid,#fx-canvas,.scrollbar{display:none!important}
+
+/* type */
+h1,h2,h3{font-family:var(--font-d);letter-spacing:-.02em;font-weight:800}
+h1{text-shadow:none;font-size:clamp(26px,6vw,36px)}
+.eyebrow{color:var(--p2);font-family:var(--font-d);letter-spacing:.14em}
+.sec-title{font-family:var(--font-d);letter-spacing:.02em;font-size:18px;justify-content:flex-start;text-transform:none}
+.sec-title::before,.sec-title::after{display:none}
+
+/* cards */
+.card{background:var(--card1);border:1px solid var(--line);border-radius:22px;box-shadow:var(--glow);transition:transform .2s var(--ease),box-shadow .2s}
+.card::before{display:none}
+.card.lift:hover,.tile:hover{transform:translateY(-3px);box-shadow:0 14px 34px -14px rgba(91,33,230,.35)}
+.card-h{font-family:var(--font-d);letter-spacing:0;font-size:15px;border-bottom:1px solid var(--line)}
+.tile h3::after{display:none}
+.ribbon{display:none}
+.stat{border-radius:20px}.stat small{letter-spacing:.04em;text-transform:none;font-size:12.5px;font-weight:600}
+.stat b{font-family:var(--font-d);font-weight:800}
+
+/* buttons */
+.btn{font-family:var(--font-d);letter-spacing:0;text-transform:none;border-radius:999px;font-size:14.5px;padding:12px 20px}
+.btn::after{display:none}.btn:hover{transform:none}.btn:active{transform:scale(.97)}
+.btn.primary{background:linear-gradient(135deg,#4318d8,#7c3aed);color:#fff;border-color:transparent;box-shadow:0 10px 22px -10px rgba(91,33,230,.7)}
+.btn.outline{background:var(--card1);color:var(--ink);border:1px solid var(--line)}
+.btn.outline:hover{background:var(--soft)}
+.btn.ghost{background:transparent;color:var(--muted);border-color:transparent}
+.btn.ghost:hover{background:var(--soft);color:var(--ink)}
+.btn.sm{padding:8px 14px;font-size:13px}
+
+/* forms */
+.field label{color:var(--muted);font-weight:600;font-size:13px;letter-spacing:0}
+.field input,.field select,.field textarea,.search,.inp{border-radius:14px;border-color:var(--line);background:var(--field)}
+.field input::placeholder,.field textarea::placeholder,.search::placeholder,.inp::placeholder{color:#a9a3c8}
+.field input:focus,.field select:focus,.field textarea:focus,.search:focus,.inp:focus{border-color:var(--p2);box-shadow:0 0 0 4px rgba(139,92,246,.18)}
+
+/* chips / pills */
+.pill,.chip{background:var(--soft);color:var(--p);border-color:transparent}
+:root[data-theme="dark"] .pill,:root[data-theme="dark"] .chip{color:#c4b5fd}
+.pill::before{animation:none;background:var(--p2)}
+.chip.live,.pill.live{background:rgba(16,185,129,.12);color:#0e9a79;border-color:transparent}
+.alert{border-radius:16px}.alert.info{background:var(--soft);border-color:transparent}.alert.info b{color:var(--p)}
+.toast{border-radius:16px;border-color:var(--line);box-shadow:0 14px 40px -12px rgba(20,16,58,.3)}
+.modal-bg{background:rgba(20,16,58,.5)}
+.modal{border-radius:24px}
+
+/* header */
+.hdr{background:var(--panel);border-bottom:0;box-shadow:none}
+.hdr-in{height:64px;max-width:1180px}
+.brand{font-family:var(--font-d);font-weight:800;font-size:22px;letter-spacing:-.03em;gap:8px}
+.brand .wlogo{width:40px;height:28px;filter:none}
+.burger{background:transparent;border:0;padding:6px}
+.pillnav{background:var(--card1);box-shadow:var(--glow)}
+.pillnav a{font-weight:600}
+.pillnav a:hover{background:var(--soft);color:var(--ink)}
+.pillnav a.on{background:linear-gradient(135deg,#4318d8,#7c3aed);box-shadow:0 6px 16px -6px rgba(91,33,230,.7)}
+.avatar{position:relative;width:40px;height:40px;background:linear-gradient(135deg,#4318d8,#7c3aed);box-shadow:0 0 0 3px #fff,0 0 0 5px #ddd5fb;cursor:pointer}
+:root[data-theme="dark"] .avatar{box-shadow:0 0 0 3px #15102c,0 0 0 5px #4b3a8f}
+.avatar::after{content:"";position:absolute;right:-1px;bottom:-1px;width:11px;height:11px;border-radius:50%;background:#22c55e;border:2px solid var(--bg)}
+.ib:hover{background:var(--soft);color:var(--ink)}
+.umenu{position:absolute;right:16px;top:60px;z-index:120;min-width:190px;padding:8px;background:var(--card1);border:1px solid var(--line);border-radius:18px;box-shadow:0 18px 44px -14px rgba(20,16,58,.35);display:none}
+.umenu.open{display:block;animation:fadeIn .15s}
+.umenu a{display:flex;gap:10px;align-items:center;padding:11px 12px;border-radius:12px;text-decoration:none;font-weight:600;font-size:14px}
+.umenu a:hover{background:var(--soft)}
+
+/* slide-in drawer (new) */
+.nav-ov{position:fixed;inset:0;z-index:300;background:rgba(20,16,58,.45);opacity:0;visibility:hidden;transition:opacity .2s,visibility .2s}
+.nav-ov.open{opacity:1;visibility:visible}
+.nav-panel{position:absolute;top:0;bottom:0;left:0;width:min(84vw,330px);background:var(--panel-solid);padding:22px 14px 24px;overflow:auto;transform:translateX(-100%);transition:transform .25s var(--ease);display:flex;flex-direction:column;gap:4px;box-shadow:20px 0 50px -20px rgba(20,16,58,.4)}
+.nav-ov.open .nav-panel{transform:none}
+.nav-top{display:flex;justify-content:space-between;align-items:center;padding:0 8px 18px}
+.nav-panel a{display:flex;align-items:center;gap:16px;padding:14px 16px;border-radius:16px;text-decoration:none;font-weight:600;font-size:16.5px;color:var(--muted);position:relative}
+.nav-panel a .icon{width:22px;height:22px}
+.nav-panel a:hover{background:var(--soft);color:var(--ink)}
+.nav-panel a.on{background:var(--soft);color:var(--p)}
+:root[data-theme="dark"] .nav-panel a.on{color:#c4b5fd}
+.nav-panel a.on::before{content:"";position:absolute;left:-14px;top:8px;bottom:8px;width:5px;border-radius:0 5px 5px 0;background:var(--p)}
+.nav-sep{height:1px;background:var(--line);margin:8px 8px}
+
+/* floating bottom nav */
+.bnav{position:fixed;left:50%;bottom:max(12px,env(safe-area-inset-bottom));transform:translateX(-50%);width:min(520px,calc(100% - 24px));z-index:80;display:flex;justify-content:space-around;padding:10px 8px;background:var(--card1);border:1px solid var(--line);border-radius:30px;box-shadow:0 16px 40px -14px rgba(91,33,230,.38)}
+.bnav a{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;font-size:12.5px;font-weight:600;color:var(--muted);position:relative;padding:4px 0 8px;-webkit-tap-highlight-color:transparent}
+.bnav a .icon{width:26px;height:26px}
+.bnav a.on{color:var(--p)}
+:root[data-theme="dark"] .bnav a.on{color:#c4b5fd}
+.bnav a.on::after{content:"";position:absolute;bottom:0;width:34px;height:4px;border-radius:4px;background:var(--p)}
+body.has-bnav .wrap{padding-bottom:120px}
+@media(min-width:900px){.bnav{display:none}body.has-bnav .wrap{padding-bottom:70px}}
+
+/* hero card (Wevlo "Build something amazing") */
+.hero{position:relative;padding:22px;border-radius:26px;background:linear-gradient(135deg,#f1ecff,#ddd2ff);border:1px solid var(--line);margin-bottom:18px;overflow:hidden}
+:root[data-theme="dark"] .hero{background:linear-gradient(135deg,#2a1f5c,#1a1535)}
+.hero h2{font-size:clamp(26px,7vw,36px);margin:12px 0 16px;line-height:1.15}
+.hero h2 em{font-style:normal;color:var(--p)}
+:root[data-theme="dark"] .hero h2 em{color:#c4b5fd}
+.hero .badge{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.7);color:var(--p);font-weight:700;font-size:14px}
+.hero .row{display:flex;gap:10px;flex-wrap:wrap}
+.hero-ic{position:absolute;top:18px;right:18px;width:62px;height:62px;border-radius:20px;background:linear-gradient(135deg,#4318d8,#7c3aed);display:grid;place-items:center;color:#fff;transform:rotate(12deg);box-shadow:0 14px 26px -10px rgba(91,33,230,.7)}
+.hero-ic .icon{width:30px;height:30px}
+
+/* ── fast, small loader ── */
+#webora-loader{background:var(--bg);gap:14px;transition:opacity .18s linear,visibility .18s}
+#webora-loader.hide{transform:none}
+.ld-stage{width:auto;height:auto}
+.ld-stage::before,.ld-stage::after,.ld-glow{display:none}
+.ld-stage .wlogo{width:76px;height:52px;filter:none}
+.wlogo.anim{animation:none}
+.wlogo.anim .back,.wlogo.anim .front{animation-duration:.45s}
+.wlogo.anim .shine{display:none}
+.ld-bar{width:84px;height:3px;background:var(--soft)}
+.ld-bar i{background:linear-gradient(90deg,#4318d8,#8b5cf6);box-shadow:none;animation-duration:.8s}
+.loader-text{display:none;color:var(--muted);letter-spacing:.04em;text-transform:none;font:600 12px var(--font-d)}
+.reveal{transform:translateY(10px) scale(1);transition:opacity .3s var(--ease),transform .3s var(--ease);transition-delay:calc(var(--d,0s)/3)}
