@@ -36,20 +36,32 @@ var S=poly();
 // the page has fully loaded (or after a short safety timeout), so it never
 // gets stuck on a slow asset.
 const W_LOADER = `
-<div id="__wb_ld" style="position:fixed;inset:0;z-index:2147483647;display:flex;align-items:center;justify-content:center;background:#f6f4ff;transition:opacity .2s ease,visibility .2s">
-  <svg viewBox="0 0 120 80" width="96" height="64" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-label="Loading">
+<div id="__wb_ld" style="position:fixed;inset:0;z-index:2147483647;display:flex;align-items:center;justify-content:center;background:radial-gradient(55% 45% at 50% 42%,rgba(139,92,246,.18),transparent 72%),#f6f4ff;transition:opacity .2s ease,visibility .2s">
+  <svg viewBox="0 0 120 120" width="104" height="104" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-label="Loading" style="overflow:visible;filter:drop-shadow(0 10px 20px rgba(91,33,230,.38))">
     <defs>
-      <linearGradient id="__wbB" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a78bfa"/><stop offset="1" stop-color="#5b21b6"/></linearGradient>
-      <linearGradient id="__wbF" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c4b5fd"/><stop offset=".5" stop-color="#8b5cf6"/><stop offset="1" stop-color="#4318d8"/></linearGradient>
+      <linearGradient id="__wbB" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a78bfa"/><stop offset=".5" stop-color="#6d3df0"/><stop offset="1" stop-color="#3a1fc2"/></linearGradient>
+      <linearGradient id="__wbW" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#e3d9ff"/></linearGradient>
     </defs>
-    <path d="M16 15 L40 62 L60 27 L80 62 L104 15" transform="translate(5 5)" stroke="url(#__wbB)" stroke-width="16" pathLength="100"/>
-    <path id="__wbFront" d="M16 15 L40 62 L60 27 L80 62 L104 15" stroke="url(#__wbF)" stroke-width="15" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"/>
+    <g class="__wbo"><g class="__wbp">
+      <rect x="14" y="14" width="92" height="92" rx="28" fill="url(#__wbB)" stroke="none"/>
+      <rect x="14.5" y="14.5" width="91" height="91" rx="27.5" stroke="#fff" stroke-opacity=".22"/>
+      <path d="M33 40 L45 76 L60 52 L75 76 L87 40" transform="translate(0 3.5)" stroke="#1b0a6b" stroke-opacity=".35" stroke-width="10.5"/>
+      <path class="__wbf" d="M33 40 L45 76 L60 52 L75 76 L87 40" stroke="url(#__wbW)" stroke-width="10" pathLength="100"/>
+      <circle class="__wbn" cx="60" cy="52" r="4.4" fill="#22d3ee" stroke="#fff" stroke-width="2"/>
+    </g></g>
+    <g class="__wbr"><circle cx="60" cy="60" r="56.5" stroke="#8b5cf6" stroke-opacity=".35" stroke-width="1.6" stroke-dasharray="70 285"/><circle cx="60" cy="60" r="56.5" stroke="#22d3ee" stroke-width="2.4" stroke-dasharray="26 329" stroke-dashoffset="-44"/><circle cx="78.4" cy="113.4" r="3" fill="#22d3ee" stroke="none"/></g>
   </svg>
 </div>
 <style>
 #__wb_ld.__wb_hide{opacity:0;visibility:hidden;pointer-events:none}
-#__wbFront{animation:__wbdraw .45s cubic-bezier(.22,.8,.24,1) forwards}
+#__wb_ld .__wbp{transform-origin:60px 60px;animation:__wbpop .45s cubic-bezier(.2,1.35,.4,1) both}
+#__wb_ld .__wbf{stroke-dasharray:100 200;stroke-dashoffset:100;animation:__wbdraw .5s cubic-bezier(.3,.7,.2,1) .15s forwards}
+#__wb_ld .__wbn{transform-origin:60px 52px;transform:scale(0);animation:__wbnode .35s cubic-bezier(.2,1.8,.4,1) .6s forwards}
+#__wb_ld .__wbr{transform-origin:60px 60px;animation:__wbspin 2.2s linear infinite}
+@keyframes __wbpop{from{opacity:0;transform:scale(.35) rotate(-14deg)}to{opacity:1;transform:none}}
 @keyframes __wbdraw{to{stroke-dashoffset:0}}
+@keyframes __wbnode{to{transform:scale(1)}}
+@keyframes __wbspin{to{transform:rotate(360deg)}}
 </style>
 <script>(function(){
   var el=document.getElementById("__wb_ld");
